@@ -5,8 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Arbr is the open AI gateway and control plane for routing, observability, budgets and governance across every model provider." />
   <title>Arbr — Control every AI request</title>
+  <link rel="preload" href="fonts/inter-var-latin.woff2" as="font" type="font/woff2" crossorigin />
   <style>
+    /* Inter v4 variable, latin subset. The opsz axis carries the Display cut at large
+       sizes, so font-optical-sizing (auto by default) handles the hero. */
+    @font-face {
+      font-family: "Inter";
+      font-style: normal;
+      font-weight: 100 900;
+      font-display: swap;
+      src: url("fonts/inter-var-latin.woff2") format("woff2");
+    }
+
     :root {
+      --sans: "Inter", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
       --ink: #171817;
       --ink-2: #292b29;
       --paper: #f3f2ed;
@@ -31,7 +43,7 @@
       margin: 0;
       color: var(--ink);
       background: var(--paper);
-      font-family: "Inter Display", Inter, Arial, sans-serif;
+      font-family: var(--sans);
       -webkit-font-smoothing: antialiased;
     }
     a { color: inherit; text-decoration: none; }
@@ -740,7 +752,7 @@
 
 /* svg elements */
 .aa-nrect{fill:#242624;stroke:#3a3d39;stroke-width:1}
-.aa-nlabel{fill:#e7e8e4;font-family:"Inter Display",Inter,Arial,sans-serif;font-size:15px;font-weight:500}
+.aa-nlabel{fill:#e7e8e4;font-family:var(--sans);font-size:15px;font-weight:500}
 .aa-nsub{fill:#9ca09a;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px}
 .aa-zone{fill:#91958e;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;letter-spacing:.2em}
 .aa-hubsub{fill:#9ca09a;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;letter-spacing:.24em}
