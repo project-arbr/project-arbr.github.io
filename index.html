@@ -29,10 +29,11 @@
       --muted-dark: #a9aca7;
       /* Signal blue is single-source: the -rgb channels feed both the solid
          tokens and every rgba() tint, so the accent changes in one place. */
-      --signal-rgb: 61,90,254;
-      --signal-2-rgb: 100,124,255;
+      --signal-rgb: 47,55,255;
+      --signal-2-rgb: 93,126,246;
       --signal: rgb(var(--signal-rgb));
       --signal-2: rgb(var(--signal-2-rgb));
+      --signal-deep: #2517e0;
       --signal-light: #aebbff;
       --white: #fbfaf6;
       --max: 1240px;
@@ -75,7 +76,8 @@
     .mark { width: 29px; height: 29px; display: block; }
     .nav-links { display: flex; align-items: center; gap: 30px; color: #4b4e4a; font-size: 14px; }
     .nav-links a { transition: color .2s ease; }
-    .nav-links a:hover { color: var(--ink); }
+    .nav-links a:hover { color: var(--signal); }
+    .nav-links a:focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; border-radius: 3px; }
     .nav-actions { display: flex; align-items: center; gap: 10px; }
     .btn {
       min-height: 42px;
@@ -89,12 +91,16 @@
       font-size: 14px;
       font-weight: 500;
       cursor: pointer;
-      transition: transform .2s ease, background .2s ease, color .2s ease;
+      transition: transform .2s ease, background .2s ease, color .2s ease, border-color .2s ease, box-shadow .2s ease;
     }
     .btn:hover { transform: translateY(-2px); }
+    .btn:focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; }
     .btn-dark { background: var(--ink); color: var(--white); }
+    .btn-dark:hover { background: var(--signal); border-color: var(--signal); box-shadow: 0 10px 26px rgba(var(--signal-rgb),.32); }
     .btn-light { background: transparent; }
+    .btn-light:hover { border-color: var(--signal); color: var(--signal); }
     .btn-signal { background: var(--signal); color: var(--white); border-color: var(--signal); }
+    .btn-signal:hover { background: var(--signal-deep); border-color: var(--signal-deep); box-shadow: 0 10px 26px rgba(var(--signal-rgb),.32); }
     .menu-button { display: none; width: 42px; height: 42px; border-radius: 50%; border: 1px solid var(--line); background: transparent; }
 
     /* Hero */
@@ -389,6 +395,8 @@
     }
     @media (prefers-reduced-motion: reduce) {
       .arbr-flow .af-pulse { animation: none; top: 9px; opacity: 1; }
+      .btn:hover { transform: none; }
+      .text-link:hover span { transform: none; }
     }
 
 
@@ -414,7 +422,11 @@
     .pillar-icon { width: 62px; height: 62px; margin: 62px 0 40px; }
     .pillar h3 { margin: 0 0 14px; font-size: 27px; letter-spacing: -.01em; font-weight: 500; }
     .pillar p { margin: 0; color: #696c68; line-height: 1.58; font-size: 15px; }
-    .text-link { display: inline-flex; align-items: center; gap: 8px; margin-top: 24px; padding-bottom: 3px; border-bottom: 1px solid var(--ink); font-size: 13px; }
+    .text-link { display: inline-flex; align-items: center; gap: 8px; margin-top: 24px; padding-bottom: 3px; border-bottom: 1px solid var(--ink); font-size: 13px; transition: color .2s ease, border-color .2s ease; }
+    .text-link:hover { color: var(--signal); border-bottom-color: var(--signal); }
+    .text-link span { display: inline-block; transition: transform .2s ease; }
+    .text-link:hover span { transform: translate(2px, 2px); }
+    .text-link:focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; border-radius: 2px; }
 
     /* Routing section */
     .dark { background: var(--ink); color: var(--white); }
