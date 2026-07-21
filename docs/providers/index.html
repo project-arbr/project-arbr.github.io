@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="The eight built-in providers, connecting via dashboard or env, LiteLLM and custom OpenAI-compatible endpoints, the 29-model registry, and tool-call support." />
+  <title>Providers & models — Arbr docs</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="preload" href="/fonts/inter-var-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="/docs/docs.css" />
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Arbr home">
+      <img src="/assets/arbr-wordmark.svg" alt="Arbr" />
+      <span class="tag">Docs</span>
+    </a>
+    <div class="topbar-actions">
+      <a class="btn btn-light btn-hide-mobile" href="/">← Home</a>
+      <a class="btn btn-dark" href="https://github.com/project-arbr/arbr-control-plane" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+  </header>
+
+  <div class="shell">
+    <nav class="sidebar">
+      <div class="group">
+        <p class="group-title">Get started</p>
+        <a href="/docs/">Overview</a>
+      </div>
+      <div class="group">
+        <p class="group-title">Core</p>
+        <a href="/docs/gateway/">Gateway</a>
+        <a href="/docs/routing/">Routing</a>
+        <a href="/docs/providers/" class="active">Providers & models</a>
+      </div>
+      <div class="group">
+        <p class="group-title">Operate</p>
+        <a href="/docs/budgets-governance/">Budgets & governance</a>
+        <a href="/docs/deployment/">Deployment</a>
+      </div>
+      <div class="group">
+        <p class="group-title">Build</p>
+        <a href="/docs/sdks/">SDKs</a>
+      </div>
+    </nav>
+
+    <main class="content">
+      <details class="mobile-nav">
+      <summary>Providers & models &nbsp;·&nbsp; menu</summary>
+      <div class="m-links">
+        <a href="/docs/">Overview</a>
+        <a href="/docs/gateway/">Gateway</a>
+        <a href="/docs/routing/">Routing</a>
+        <a href="/docs/providers/" class="active">Providers & models</a>
+        <a href="/docs/budgets-governance/">Budgets & governance</a>
+        <a href="/docs/deployment/">Deployment</a>
+        <a href="/docs/sdks/">SDKs</a>
+      </div>
+    </details>
+      
+<p class="kicker">Core</p>
+<h1>Providers &amp; models</h1>
+<p class="lede">Eight providers are built in, plus any OpenAI-compatible endpoint — including a LiteLLM proxy. Connect a key once and its models become routable; Arbr never hands provider credentials to client applications.</p>
+
+<h2 id="providers">Built-in providers</h2>
+<div class="table-scroll"><table>
+<thead><tr><th>Provider</th><th>ID</th><th>Env var</th><th>Default model</th></tr></thead>
+<tbody>
+<tr><td>Anthropic</td><td><code>anthropic</code></td><td><code>ANTHROPIC_API_KEY</code></td><td><code>claude-haiku-4-5</code></td></tr>
+<tr><td>OpenAI</td><td><code>openai</code></td><td><code>OPENAI_API_KEY</code></td><td><code>gpt-4o-mini</code></td></tr>
+<tr><td>Google Gemini</td><td><code>gemini</code></td><td><code>GEMINI_API_KEY</code></td><td><code>gemini-2.5-flash</code></td></tr>
+<tr><td>Amazon Bedrock</td><td><code>bedrock-nova</code></td><td><code>AWS_ACCESS_KEY_ID</code> +&nbsp;secret</td><td><code>us.amazon.nova-lite-v1:0</code></td></tr>
+<tr><td>DeepSeek</td><td><code>deepseek</code></td><td><code>DEEPSEEK_API_KEY</code></td><td><code>deepseek-chat</code></td></tr>
+<tr><td>Moonshot AI</td><td><code>moonshot</code></td><td><code>MOONSHOT_API_KEY</code></td><td><code>moonshot-v1-8k</code></td></tr>
+<tr><td>xAI (Grok)</td><td><code>xai</code></td><td><code>XAI_API_KEY</code></td><td><code>grok-3-mini</code></td></tr>
+<tr><td>Groq</td><td><code>groq</code></td><td><code>GROQ_API_KEY</code></td><td><code>llama-3.3-70b-versatile</code></td></tr>
+</tbody>
+</table></div>
+
+<h2 id="connect">Connecting a provider</h2>
+<p>Two ways, and you can mix them:</p>
+<ul>
+<li><strong>Dashboard</strong> — open <strong>Settings → Connections</strong>, paste a key, and the provider goes live immediately with no restart. Keys are stored encrypted at rest, shown only masked, and never returned to the browser.</li>
+<li><strong>Environment</strong> — set the provider's env var before starting. <strong>Environment variables take precedence</strong> over dashboard-stored keys — the recommended path for production.</li>
+</ul>
+
+<div class="note">
+<span class="note-label">Demo mode</span>
+<p>With zero provider keys configured, Arbr runs in <strong>demo mode</strong>: every dashboard, the recommendation engine, and the routing controls work on seeded data. Only live <code>/v1</code> calls are disabled until you add a key.</p>
+</div>
+
+<h2 id="litellm">LiteLLM &amp; custom OpenAI-compatible providers</h2>
+<p>Arbr sits <em>in front of</em> LiteLLM — it's an upstream Arbr connects to, not a replacement. You keep LiteLLM's provider breadth and layer Arbr's routing, evidence, budgets, and governance on top. Connect it from the dashboard (Discover → Import models) or point the <code>openai</code> provider at any OpenAI-compatible base URL:</p>
+<div class="codeblock"><span class="lang">env</span><pre><code>OPENAI_BASE_URL=https://your-litellm-host/v1
+OPENAI_API_KEY=sk-litellm-...</code></pre></div>
+<p>The same mechanism connects vLLM, Ollama, NVIDIA NIM, or any other OpenAI-compatible server. Requests, tool calls, and streaming pass through the full chain unchanged.</p>
+
+<h2 id="registry">The model registry</h2>
+<p>Arbr ships <strong>29 built-in models</strong> with pricing, tier, and capability metadata. The registry drives cost tracking, recommendations, guardrail downgrades, and routing. A model without a pricing entry still works as a pass-through — its cost is logged as $0 and excluded from savings claims until you add pricing.</p>
+
+<h3>A sample of the registry</h3>
+<div class="table-scroll"><table>
+<thead><tr><th>Model</th><th>Provider</th><th>Tier</th><th>$ / 1M in → out</th></tr></thead>
+<tbody>
+<tr><td><code>claude-opus-4-8</code></td><td>anthropic</td><td>premium</td><td>$5 → $25</td></tr>
+<tr><td><code>claude-sonnet-4-6</code></td><td>anthropic</td><td>mid</td><td>$3 → $15</td></tr>
+<tr><td><code>claude-haiku-4-5</code></td><td>anthropic</td><td>light</td><td>$1 → $5</td></tr>
+<tr><td><code>gpt-4o</code></td><td>openai</td><td>premium</td><td>$2.50 → $10</td></tr>
+<tr><td><code>gpt-4o-mini</code></td><td>openai</td><td>light</td><td>$0.15 → $0.60</td></tr>
+<tr><td><code>gemini-2.5-pro</code></td><td>gemini</td><td>premium</td><td>$1.25 → $10</td></tr>
+<tr><td><code>gemini-2.5-flash</code></td><td>gemini</td><td>light</td><td>$0.30 → $2.50</td></tr>
+<tr><td><code>nova-lite-v1:0</code></td><td>bedrock-nova</td><td>light</td><td>$0.06 → $0.24</td></tr>
+<tr><td><code>deepseek-chat</code></td><td>deepseek</td><td>light</td><td>$0.27 → $1.10</td></tr>
+<tr><td><code>grok-3-mini</code></td><td>xai</td><td>light</td><td>$0.30 → $0.50</td></tr>
+<tr><td><code>llama-3.3-70b-versatile</code></td><td>groq</td><td>mid</td><td>$0.59 → $0.79</td></tr>
+</tbody>
+</table></div>
+<p>Add or edit models from the dashboard, the admin API, or the seed. Built-in pricing updates on re-seed without touching your custom entries.</p>
+
+<h2 id="tools">Tool-call support</h2>
+<p>Not every provider supports function calling through Arbr today. <code>GET /v1/models</code> returns a <code>toolCallSupported</code> flag per model so a client knows whether to enable function-calling UI. It is <code>true</code> for OpenAI, DeepSeek, Groq, xAI, Moonshot, LiteLLM, and Amazon Nova; <code>false</code> for Gemini, Anthropic, and non-Nova Bedrock models. If your agent needs tools, pin a tool-capable model rather than using <code>auto</code>.</p>
+
+<div class="note">
+<span class="note-label">Per-provider notes</span>
+<p>Provider-specific quirks — Opus rejecting temperature, Gemini thinking-variant JSON, Bedrock IAM permissions — are documented per provider in the <a href="https://github.com/project-arbr/arbr-control-plane/tree/main/docs/providers" target="_blank" rel="noopener">providers reference on GitHub ↗</a>.</p>
+</div>
+
+      <footer class="docs-footer">
+        <p>Arbr is open source under the MIT license. Found something out of date?
+        <a href="https://github.com/project-arbr/arbr-control-plane/tree/main/docs" target="_blank" rel="noopener">Edit the source docs on GitHub ↗</a></p>
+        <p>© 2026 Arbr · <a href="/">projectarbr.org</a></p>
+      </footer>
+    </main>
+
+    <aside class="toc">
+      <p class="toc-title">On this page</p>
+      <a href="#providers">Built-in providers</a>
+      <a href="#connect">Connecting a provider</a>
+      <a href="#litellm">LiteLLM & custom</a>
+      <a href="#registry">The model registry</a>
+      <a href="#tools">Tool-call support</a>
+    </aside>
+  </div>
+
+  <script>
+    // Copy buttons for code blocks — same behaviour as the marketing page.
+    document.querySelectorAll(".codeblock").forEach(function (block) {
+      var btn = document.createElement("button");
+      btn.className = "copy-btn";
+      btn.type = "button";
+      btn.textContent = "Copy";
+      btn.addEventListener("click", function () {
+        var code = block.querySelector("pre");
+        navigator.clipboard.writeText(code ? code.innerText : "").then(function () {
+          btn.textContent = "Copied";
+          setTimeout(function () { btn.textContent = "Copy"; }, 1400);
+        });
+      });
+      block.appendChild(btn);
+    });
+  </script>
+</body>
+</html>
