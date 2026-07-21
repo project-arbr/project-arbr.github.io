@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Official JavaScript and Python clients for Arbr — install, usage, streaming, LangChain adapters, and configuration." />
-  <title>SDKs — Arbr docs</title>
+  <meta name="description" content="Official JavaScript and Python clients for Arbr: install, usage, streaming, LangChain adapters, and configuration." />
+  <title>SDKs · Arbr docs</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="preload" href="/fonts/inter-var-latin.woff2" as="font" type="font/woff2" crossorigin />
@@ -61,14 +61,14 @@
       
 <p class="kicker">Build</p>
 <h1>SDKs</h1>
-<p class="lede">Official zero-dependency clients for JavaScript and Python, with retries, timeouts, typed errors, and LangChain adapters. Or skip them entirely — any OpenAI-compatible SDK works against the gateway.</p>
+<p class="lede">Official zero-dependency clients for JavaScript and Python, with retries, timeouts, typed errors, and LangChain adapters. You can also skip them entirely, since any OpenAI-compatible SDK works against the gateway.</p>
 
 <div class="note">
 <span class="note-label">The base-URL swap</span>
-<p>You don't need an Arbr SDK. Point the OpenAI SDK's <code>base_url</code> at your Arbr instance and every call gains routing, logging, and budgets — see <a href="/docs/gateway/#openai-compat">the OpenAI-compatible endpoint</a>. The clients below add first-class attribution and the native endpoint's richer response.</p>
+<p>You don't need an Arbr SDK. Point the OpenAI SDK's <code>base_url</code> at your Arbr instance and every call gains routing, logging, and budgets (see <a href="/docs/gateway/#openai-compat">the OpenAI-compatible endpoint</a>). The clients below add first-class attribution and the native endpoint's richer response.</p>
 </div>
 
-<h2 id="js">JavaScript — <code>arbr-client</code></h2>
+<h2 id="js">JavaScript: <code>arbr-client</code></h2>
 <p>Node ≥ 18, zero dependencies.</p>
 <div class="codeblock"><span class="lang">sh</span><pre><code>npm install arbr-client</code></pre></div>
 <div class="codeblock"><span class="lang">js</span><pre><code>import { createClient } from "arbr-client";
@@ -87,7 +87,7 @@ const res = await arbr.chat({
 console.log(res.text, res.model, res.routingDecision);</code></pre></div>
 <p>Methods: <code>chat()</code>, <code>stream()</code>, <code>models()</code>, <code>taskTypes()</code>, <code>embeddings()</code>, <code>status()</code>. Errors throw a <code>GatewayError</code> with a stable <code>code</code>. For LangChain, <code>arbr.asLangChainModel()</code> returns a drop-in chat model.</p>
 
-<h2 id="python">Python — <code>arbr-client</code></h2>
+<h2 id="python">Python: <code>arbr-client</code></h2>
 <p>Python ≥ 3.11, standard library only, sync and async.</p>
 <div class="codeblock"><span class="lang">sh</span><pre><code>pip install arbr-client            # or: pip install "arbr-client[langchain]"</code></pre></div>
 <div class="codeblock"><span class="lang">python</span><pre><code>from arbr_client import create_client
@@ -100,7 +100,7 @@ arbr = create_client(
 
 res = arbr.chat(messages="Summarise: my card was declined.", model="auto")
 print(res.text, res.model, res.routing_decision)</code></pre></div>
-<p>Every method has an async twin: <code>achat</code>, <code>astream</code>, <code>amodels</code>, <code>aembeddings</code>, <code>astatus</code>. Responses are frozen dataclasses (<code>ChatResponse</code> with <code>text</code>, <code>model</code>, <code>routing_decision</code>, <code>usage</code>, …). For LangChain, use <code>ArbrChatModel</code> or <code>as_langchain_model()</code>.</p>
+<p>Every method has an async twin: <code>achat</code>, <code>astream</code>, <code>amodels</code>, <code>aembeddings</code>, <code>astatus</code>. Responses are frozen dataclasses (<code>ChatResponse</code> carries <code>text</code>, <code>model</code>, <code>routing_decision</code>, <code>usage</code>, and more). For LangChain, use <code>ArbrChatModel</code> or <code>as_langchain_model()</code>.</p>
 
 <h3>Streaming</h3>
 <div class="codeblock"><span class="lang">python</span><pre><code>for chunk in arbr.stream(messages="Write a haiku about routing.", model="auto"):
@@ -120,7 +120,7 @@ print(res.text, res.model, res.routing_decision)</code></pre></div>
 
 <div class="note">
 <span class="note-label">Full reference</span>
-<p>Every method signature and error code is documented per language — <a href="https://github.com/project-arbr/arbr-control-plane/blob/main/docs/sdk/js.md" target="_blank" rel="noopener">JavaScript ↗</a> · <a href="https://github.com/project-arbr/arbr-control-plane/blob/main/docs/sdk/python.md" target="_blank" rel="noopener">Python ↗</a>.</p>
+<p>Every method signature and error code is documented per language. See <a href="https://github.com/project-arbr/arbr-control-plane/blob/main/docs/sdk/js.md" target="_blank" rel="noopener">JavaScript ↗</a> and <a href="https://github.com/project-arbr/arbr-control-plane/blob/main/docs/sdk/python.md" target="_blank" rel="noopener">Python ↗</a>.</p>
 </div>
 
       <footer class="docs-footer">
@@ -139,7 +139,7 @@ print(res.text, res.model, res.routing_decision)</code></pre></div>
   </div>
 
   <script>
-    // Copy buttons for code blocks — same behaviour as the marketing page.
+    // Copy buttons for code blocks, same behaviour as the marketing page.
     document.querySelectorAll(".codeblock").forEach(function (block) {
       var btn = document.createElement("button");
       btn.className = "copy-btn";

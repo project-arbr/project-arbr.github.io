@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Arbr's gateway endpoints: native /v1/chat, OpenAI-compatible /v1/chat/completions, embeddings, realtime voice, and observe-only ingestion." />
-  <title>Gateway — Arbr docs</title>
+  <title>Gateway · Arbr docs</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="preload" href="/fonts/inter-var-latin.woff2" as="font" type="font/woff2" crossorigin />
@@ -61,31 +61,31 @@
       
 <p class="kicker">Core</p>
 <h1>Gateway</h1>
-<p class="lede">One endpoint stands between your applications and every model provider. Point a client at it and every call gains routing, cost logging, attribution, and budget enforcement — with no change to your code beyond the base URL.</p>
+<p class="lede">One endpoint stands between your applications and every model provider. Point a client at it and every call gains routing, cost logging, attribution, and budget enforcement. Nothing in your code changes beyond the base URL.</p>
 
-<p>Arbr exposes several surfaces on one port (default <code>4100</code>). Two of them accept chat traffic — a native endpoint with full attribution, and a drop-in OpenAI-compatible endpoint — plus embeddings, a realtime voice proxy, and an observe-only ingestion endpoint.</p>
+<p>Arbr exposes several surfaces on one port (default <code>4100</code>). Two of them accept chat traffic: a native endpoint with full attribution and a drop-in OpenAI-compatible endpoint. There are also embeddings, a realtime voice proxy, and an observe-only ingestion endpoint.</p>
 
 <h2 id="auth">Authentication</h2>
-<p>Data-plane calls authenticate with a <strong>gateway API key</strong> (prefix <code>ab_</code>), sent as a bearer token. Keys are optional until an administrator turns on <em>Require API keys</em>; after that, anonymous calls are rejected.</p>
+<p>Data-plane calls authenticate with a <strong>gateway API key</strong> (prefix <code>ab_</code>), sent as a bearer token. Keys are optional until an administrator turns on <em>Require API keys</em>, after which anonymous calls are rejected.</p>
 <div class="codeblock"><span class="lang">http</span><pre><code>Authorization: Bearer ab_...</code></pre></div>
-<p>A key binds attribution — the application, department, and rate limit tied to it override whatever the request body claims. See <a href="/docs/budgets-governance/#api-keys">Gateway API keys</a>.</p>
+<p>A key binds attribution: the application, department, and rate limit tied to it override whatever the request body claims. See <a href="/docs/budgets-governance/#api-keys">Gateway API keys</a>.</p>
 
-<h2 id="native">Native endpoint — <code>POST /v1/chat</code></h2>
-<p>The Arbr-native endpoint. Accepts business metadata alongside the messages for full attribution, task classification, and routing.</p>
+<h2 id="native">Native endpoint: <code>POST /v1/chat</code></h2>
+<p>The Arbr-native endpoint. It accepts business metadata alongside the messages for full attribution, task classification, and routing.</p>
 
 <h3>Body fields</h3>
 <div class="table-scroll"><table>
 <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
 <tbody>
-<tr><td><code>messages</code></td><td>string | array</td><td><strong>Required.</strong> A bare string (→ one user message), <code>{role, content}</code> objects, or LangChain message objects.</td></tr>
+<tr><td><code>messages</code></td><td>string | array</td><td><strong>Required.</strong> A bare string (becomes one user message), <code>{role, content}</code> objects, or LangChain message objects.</td></tr>
 <tr><td><code>model</code></td><td>string</td><td>A model ID to pin, or <code>"auto"</code> / omit to let the router decide.</td></tr>
 <tr><td><code>provider</code></td><td>string</td><td>Provider ID. Required to pass through to a model not in the registry.</td></tr>
-<tr><td><code>application</code></td><td>string</td><td>Attribution — the app or service making the call. Shows in every dashboard view.</td></tr>
+<tr><td><code>application</code></td><td>string</td><td>The app or service making the call. Shows in every dashboard view.</td></tr>
 <tr><td><code>workflow</code></td><td>string</td><td>Sub-workflow within the app, e.g. <code>"ticket-triage"</code>.</td></tr>
 <tr><td><code>department</code></td><td>string</td><td>Team or department attribution.</td></tr>
 <tr><td><code>userId</code></td><td>string</td><td>End-user identifier.</td></tr>
-<tr><td><code>taskType</code></td><td>string</td><td>A known task type (classification, extraction, summarisation, …). Auto-inferred if omitted.</td></tr>
-<tr><td><code>temperature</code></td><td>number</td><td>Sampling temperature (0–2).</td></tr>
+<tr><td><code>taskType</code></td><td>string</td><td>A known task type (classification, extraction, summarisation, and so on). Inferred automatically if omitted.</td></tr>
+<tr><td><code>temperature</code></td><td>number</td><td>Sampling temperature, 0 to 2.</td></tr>
 <tr><td><code>maxTokens</code></td><td>number</td><td>Max completion tokens.</td></tr>
 </tbody>
 </table></div>
@@ -125,10 +125,10 @@
     "cachedReadTokens": 0
   }
 }</code></pre></div>
-<p><code>model</code> is what was <em>served</em>; <code>modelRequested</code> is what the app asked for — the pair is what makes realised savings measurable. <code>routingDecision</code> explains why this model was chosen (see <a href="/docs/routing/">Routing</a>).</p>
+<p><code>model</code> is what was <em>served</em>, and <code>modelRequested</code> is what the app asked for. Storing both is what makes realised savings measurable. <code>routingDecision</code> explains why this model was chosen (see <a href="/docs/routing/">Routing</a>).</p>
 
-<h2 id="openai-compat">OpenAI-compatible — <code>POST /v1/chat/completions</code></h2>
-<p>A drop-in replacement for the OpenAI chat API. Any client that speaks the OpenAI spec — the official SDKs, LangChain's <code>ChatOpenAI</code>, LibreChat, OpenWebUI — works unchanged. Just change the base URL and use a gateway key.</p>
+<h2 id="openai-compat">OpenAI-compatible: <code>POST /v1/chat/completions</code></h2>
+<p>A drop-in replacement for the OpenAI chat API. Any client that speaks the OpenAI spec works unchanged: the official SDKs, LangChain's <code>ChatOpenAI</code>, LibreChat, OpenWebUI. Just change the base URL and use a gateway key.</p>
 <div class="codeblock"><span class="lang">python</span><pre><code>from openai import OpenAI
 
 client = OpenAI(
@@ -149,21 +149,21 @@ print(resp.choices[0].message.content)</code></pre></div>
 )</code></pre></div>
 
 <h3>Streaming</h3>
-<p>Set <code>"stream": true</code> for Server-Sent Events — <code>chat.completion.chunk</code> lines terminated by <code>data: [DONE]</code>, exactly as OpenAI streams. Note that output guardrails and response transforms do not apply to streamed responses (the input max-tokens clamp still does). Behind nginx, disable proxy buffering for the streaming location.</p>
+<p>Set <code>"stream": true</code> for Server-Sent Events. You get <code>chat.completion.chunk</code> lines terminated by <code>data: [DONE]</code>, exactly as OpenAI streams. One caveat: output guardrails and response transforms don't apply to streamed responses, though the input max-tokens clamp still does. Behind nginx, disable proxy buffering for the streaming location.</p>
 
-<h2 id="embeddings">Embeddings — <code>POST /v1/embeddings</code></h2>
+<h2 id="embeddings">Embeddings: <code>POST /v1/embeddings</code></h2>
 <p>OpenAI-compatible embeddings, routed to OpenAI (<code>text-embedding-3-small</code> / <code>-large</code>) or Gemini (<code>gemini-embedding-001</code>) by model ID. Logged with <code>taskType: "embedding"</code>.</p>
 <div class="codeblock"><span class="lang">sh</span><pre><code>curl -X POST http://localhost:4100/v1/embeddings \
   -H 'Content-Type: application/json' \
   -d '{ "model": "text-embedding-3-small", "input": "hello world" }'</code></pre></div>
-<p>Pass <code>dimensions</code> to request a shorter vector (Gemini maps it to <code>outputDimensionality</code>); it must match your index size. Response is <code>{ object: "list", data: [{ embedding: [...] }], usage }</code>.</p>
+<p>Pass <code>dimensions</code> to request a shorter vector (Gemini maps it to <code>outputDimensionality</code>). It has to match your index size. The response is <code>{ object: "list", data: [{ embedding: [...] }], usage }</code>.</p>
 
-<h2 id="realtime">Realtime voice — <code>WS /v1/realtime</code></h2>
-<p>A transparent WebSocket proxy to the OpenAI Realtime API. Clients connect with a gateway key; Arbr injects the real provider key and relays every frame unmodified. On session close it logs audio and text token counts and the session duration.</p>
+<h2 id="realtime">Realtime voice: <code>WS /v1/realtime</code></h2>
+<p>A transparent WebSocket proxy to the OpenAI Realtime API. Clients connect with a gateway key, Arbr injects the real provider key, and it relays every frame unmodified. When the session closes, it logs audio and text token counts and the session duration.</p>
 <div class="codeblock"><pre><code>wss://arbr.yourcompany.com/v1/realtime?model=gpt-4o-realtime-preview</code></pre></div>
 
-<h2 id="ingest">Observe-only ingestion — <code>POST /v1/ingest</code></h2>
-<p>Report metadata for calls that happened <em>elsewhere</em> — for instance a LiteLLM callback — so their cost and usage show up in Arbr without routing through it. Send a batch of up to 500 events; only <code>requestId</code> and <code>model</code> are required per event, and cost is derived server-side. Ingested records count toward budgets for visibility but never trigger enforcement, and are idempotent per key on <code>requestId</code>.</p>
+<h2 id="ingest">Observe-only ingestion: <code>POST /v1/ingest</code></h2>
+<p>Report metadata for calls that happened <em>elsewhere</em>, such as a LiteLLM callback, so their cost and usage show up in Arbr without routing through it. Send a batch of up to 500 events. Only <code>requestId</code> and <code>model</code> are required per event, and cost is derived server-side. Ingested records count toward budgets for visibility but never trigger enforcement, and they're idempotent per key on <code>requestId</code>.</p>
 
 <h2 id="discovery">Discovery &amp; health</h2>
 <div class="table-scroll"><table>
@@ -191,7 +191,7 @@ print(resp.choices[0].message.content)</code></pre></div>
     <aside class="toc">
       <p class="toc-title">On this page</p>
       <a href="#auth">Authentication</a>
-      <a href="#native">Native — /v1/chat</a>
+      <a href="#native">Native endpoint</a>
       <a href="#openai-compat">OpenAI-compatible</a>
       <a href="#embeddings">Embeddings</a>
       <a href="#realtime">Realtime voice</a>
@@ -201,7 +201,7 @@ print(resp.choices[0].message.content)</code></pre></div>
   </div>
 
   <script>
-    // Copy buttons for code blocks — same behaviour as the marketing page.
+    // Copy buttons for code blocks, same behaviour as the marketing page.
     document.querySelectorAll(".codeblock").forEach(function (block) {
       var btn = document.createElement("button");
       btn.className = "copy-btn";

@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="The eight built-in providers, connecting via dashboard or env, LiteLLM and custom OpenAI-compatible endpoints, the 29-model registry, and tool-call support." />
-  <title>Providers & models — Arbr docs</title>
+  <title>Providers & models · Arbr docs</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="preload" href="/fonts/inter-var-latin.woff2" as="font" type="font/woff2" crossorigin />
@@ -61,7 +61,7 @@
       
 <p class="kicker">Core</p>
 <h1>Providers &amp; models</h1>
-<p class="lede">Eight providers are built in, plus any OpenAI-compatible endpoint — including a LiteLLM proxy. Connect a key once and its models become routable; Arbr never hands provider credentials to client applications.</p>
+<p class="lede">Eight providers are built in, plus any OpenAI-compatible endpoint, including a LiteLLM proxy. Connect a key once and its models become routable. Arbr never hands provider credentials to client applications.</p>
 
 <h2 id="providers">Built-in providers</h2>
 <div class="table-scroll"><table>
@@ -81,8 +81,8 @@
 <h2 id="connect">Connecting a provider</h2>
 <p>Two ways, and you can mix them:</p>
 <ul>
-<li><strong>Dashboard</strong> — open <strong>Settings → Connections</strong>, paste a key, and the provider goes live immediately with no restart. Keys are stored encrypted at rest, shown only masked, and never returned to the browser.</li>
-<li><strong>Environment</strong> — set the provider's env var before starting. <strong>Environment variables take precedence</strong> over dashboard-stored keys — the recommended path for production.</li>
+<li><strong>Dashboard.</strong> Open <strong>Settings → Connections</strong>, paste a key, and the provider goes live immediately with no restart. Keys are stored encrypted at rest, shown only masked, and never returned to the browser.</li>
+<li><strong>Environment.</strong> Set the provider's env var before starting. Environment variables take precedence over dashboard-stored keys, which is the recommended path for production.</li>
 </ul>
 
 <div class="note">
@@ -91,13 +91,13 @@
 </div>
 
 <h2 id="litellm">LiteLLM &amp; custom OpenAI-compatible providers</h2>
-<p>Arbr sits <em>in front of</em> LiteLLM — it's an upstream Arbr connects to, not a replacement. You keep LiteLLM's provider breadth and layer Arbr's routing, evidence, budgets, and governance on top. Connect it from the dashboard (Discover → Import models) or point the <code>openai</code> provider at any OpenAI-compatible base URL:</p>
+<p>Arbr sits <em>in front of</em> LiteLLM. It's an upstream Arbr connects to, not a replacement. You keep LiteLLM's provider breadth and layer Arbr's routing, evidence, budgets, and governance on top. Connect it from the dashboard (Discover → Import models), or point the <code>openai</code> provider at any OpenAI-compatible base URL:</p>
 <div class="codeblock"><span class="lang">env</span><pre><code>OPENAI_BASE_URL=https://your-litellm-host/v1
 OPENAI_API_KEY=sk-litellm-...</code></pre></div>
 <p>The same mechanism connects vLLM, Ollama, NVIDIA NIM, or any other OpenAI-compatible server. Requests, tool calls, and streaming pass through the full chain unchanged.</p>
 
 <h2 id="registry">The model registry</h2>
-<p>Arbr ships <strong>29 built-in models</strong> with pricing, tier, and capability metadata. The registry drives cost tracking, recommendations, guardrail downgrades, and routing. A model without a pricing entry still works as a pass-through — its cost is logged as $0 and excluded from savings claims until you add pricing.</p>
+<p>Arbr ships <strong>29 built-in models</strong> with pricing, tier, and capability metadata. The registry drives cost tracking, recommendations, guardrail downgrades, and routing. A model without a pricing entry still works as a pass-through. Its cost is logged as $0 and left out of savings claims until you add pricing.</p>
 
 <h3>A sample of the registry</h3>
 <div class="table-scroll"><table>
@@ -119,11 +119,11 @@ OPENAI_API_KEY=sk-litellm-...</code></pre></div>
 <p>Add or edit models from the dashboard, the admin API, or the seed. Built-in pricing updates on re-seed without touching your custom entries.</p>
 
 <h2 id="tools">Tool-call support</h2>
-<p>Not every provider supports function calling through Arbr today. <code>GET /v1/models</code> returns a <code>toolCallSupported</code> flag per model so a client knows whether to enable function-calling UI. It is <code>true</code> for OpenAI, DeepSeek, Groq, xAI, Moonshot, LiteLLM, and Amazon Nova; <code>false</code> for Gemini, Anthropic, and non-Nova Bedrock models. If your agent needs tools, pin a tool-capable model rather than using <code>auto</code>.</p>
+<p>Not every provider supports function calling through Arbr today. <code>GET /v1/models</code> returns a <code>toolCallSupported</code> flag per model, so a client knows whether to enable its function-calling UI. It's <code>true</code> for OpenAI, DeepSeek, Groq, xAI, Moonshot, LiteLLM, and Amazon Nova. It's <code>false</code> for Gemini, Anthropic, and non-Nova Bedrock models. If your agent needs tools, pin a tool-capable model rather than using <code>auto</code>.</p>
 
 <div class="note">
 <span class="note-label">Per-provider notes</span>
-<p>Provider-specific quirks — Opus rejecting temperature, Gemini thinking-variant JSON, Bedrock IAM permissions — are documented per provider in the <a href="https://github.com/project-arbr/arbr-control-plane/tree/main/docs/providers" target="_blank" rel="noopener">providers reference on GitHub ↗</a>.</p>
+<p>Provider-specific quirks, like Opus rejecting temperature, Gemini's thinking-variant JSON, and Bedrock IAM permissions, are documented per provider in the <a href="https://github.com/project-arbr/arbr-control-plane/tree/main/docs/providers" target="_blank" rel="noopener">providers reference on GitHub ↗</a>.</p>
 </div>
 
       <footer class="docs-footer">
@@ -144,7 +144,7 @@ OPENAI_API_KEY=sk-litellm-...</code></pre></div>
   </div>
 
   <script>
-    // Copy buttons for code blocks — same behaviour as the marketing page.
+    // Copy buttons for code blocks, same behaviour as the marketing page.
     document.querySelectorAll(".codeblock").forEach(function (block) {
       var btn = document.createElement("button");
       btn.className = "copy-btn";
