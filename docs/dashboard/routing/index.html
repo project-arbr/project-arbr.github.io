@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Set up routing from the Arbr console: connect a provider, create rules, choose an automated mode, and generate and tune an AI routing policy." />
+  <title>Setting up routing · Arbr docs</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="preload" href="/fonts/inter-var-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="/docs/docs.css" />
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Arbr home">
+      <img src="/assets/arbr-wordmark.svg" alt="Arbr" />
+      <span class="tag">Docs</span>
+    </a>
+    <div class="topbar-actions">
+      <a class="btn btn-light btn-hide-mobile" href="/">← Home</a>
+      <a class="btn btn-dark" href="https://github.com/project-arbr/arbr-control-plane" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+  </header>
+
+  <div class="shell">
+    <nav class="sidebar">
+      <div class="group">
+        <p class="group-title">Get started</p>
+        <a href="/docs/">Overview</a>
+      </div>
+      <div class="group">
+        <p class="group-title">Dashboard</p>
+        <a href="/docs/dashboard/">Dashboard tour</a>
+        <a href="/docs/dashboard/routing/" class="active">Setting up routing</a>
+        <a href="/docs/dashboard/evals/">Model evals</a>
+        <a href="/docs/dashboard/governance/">Governance & admin</a>
+      </div>
+      <div class="group">
+        <p class="group-title">Core</p>
+        <a href="/docs/gateway/">Gateway</a>
+        <a href="/docs/routing/">Routing</a>
+        <a href="/docs/providers/">Providers & models</a>
+      </div>
+      <div class="group">
+        <p class="group-title">Operate</p>
+        <a href="/docs/budgets-governance/">Budgets & governance</a>
+        <a href="/docs/deployment/">Deployment</a>
+      </div>
+      <div class="group">
+        <p class="group-title">Build</p>
+        <a href="/docs/sdks/">SDKs</a>
+      </div>
+    </nav>
+
+    <main class="content">
+      <details class="mobile-nav">
+      <summary>Setting up routing &nbsp;·&nbsp; menu</summary>
+      <div class="m-links">
+        <a href="/docs/">Overview</a>
+        <a href="/docs/dashboard/">Dashboard tour</a>
+        <a href="/docs/dashboard/routing/" class="active">Setting up routing</a>
+        <a href="/docs/dashboard/evals/">Model evals</a>
+        <a href="/docs/dashboard/governance/">Governance & admin</a>
+        <a href="/docs/gateway/">Gateway</a>
+        <a href="/docs/routing/">Routing</a>
+        <a href="/docs/providers/">Providers & models</a>
+        <a href="/docs/budgets-governance/">Budgets & governance</a>
+        <a href="/docs/deployment/">Deployment</a>
+        <a href="/docs/sdks/">SDKs</a>
+      </div>
+    </details>
+      
+<p class="kicker">Dashboard</p>
+<h1>Setting up routing</h1>
+<p class="lede">How to decide which model serves your traffic, from the console. Connect a provider, optionally add deterministic rules, then pick an automated mode and tune it. For the concepts behind routing, see the <a href="/docs/routing/">Routing</a> reference.</p>
+
+<h2 id="connect">First, connect a provider</h2>
+<p>Routing targets have to be real, connected models, so start on the <strong>Models</strong> page (sidebar → Connect → Models). This is where provider keys live.</p>
+<ol>
+<li>Pick a provider in the left list, or use <strong>+ Add provider</strong> for a custom OpenAI-compatible one.</li>
+<li>Enter the API key (for AWS Bedrock, the access key, secret, and region) and save. Keys are stored encrypted and never returned to the browser.</li>
+<li>Click <strong>Test connection</strong> to confirm it works. A green banner shows the model that answered and a sample reply.</li>
+<li>Click <strong>Discover models</strong>, tick the ones you want, and <strong>Import selected</strong>. Non-chat models (embeddings, rerankers) are unticked by default.</li>
+</ol>
+<p><strong>Sync Models</strong> (top-right) refreshes pricing from the LiteLLM catalog and pulls in LiveBench and LMSYS Arena scores, so the registry and the model comparison views stay current. Each model row can be expanded to see pricing, capabilities, benchmark scores, and a per-model <strong>Test</strong> button.</p>
+
+<div class="note">
+<span class="note-label">Demo mode</span>
+<p>With no keys connected, Arbr runs on seeded data and every page works, but live routing is disabled until you connect at least one provider.</p>
+</div>
+
+<h2 id="rules">Deterministic rules</h2>
+<p>Open <strong>Routing</strong> (sidebar → Route → Routing). The <strong>Rules</strong> tab is for hard mappings: <em>this condition always uses this model</em>. Rules are deterministic, and they always win over automated routing.</p>
+<p>In <strong>Create a rule</strong>:</p>
+<ol>
+<li>Set <strong>When</strong> to a task type, an application, or a workflow.</li>
+<li>Type the value it should match in <strong>Equals</strong> (for example, <code>classification</code>).</li>
+<li>Pick the target <strong>Provider</strong> and <strong>Model</strong>.</li>
+<li>Leave <strong>Enable now</strong> checked and click <strong>Add rule</strong>.</li>
+</ol>
+<p>The rule appears in the table below, where the <strong>On</strong> toggle enables or disables it live and <strong>Delete</strong> removes it. Rules are optional. Most teams rely on automated routing and add a rule only for a specific override.</p>
+
+<h2 id="automated">Automated routing</h2>
+<p>The <strong>Automated routing</strong> tab decides the model in <em>auto mode</em>, which is when a caller sends <code>model: "auto"</code>, no model, or one that isn't available. A pinned, connected model is always honored, and a matching rule always wins first.</p>
+<p>Pick one of three modes. Selecting a mode applies it immediately, with no separate save:</p>
+<div class="table-scroll"><table>
+<thead><tr><th>Mode</th><th>What it does</th></tr></thead>
+<tbody>
+<tr><td><strong>Off</strong></td><td>Auto-mode requests just use the default model, after any matching rule.</td></tr>
+<tr><td><strong>Cost guardrail</strong></td><td>A heuristic that downgrades premium models on cheap task types, following the policy you set.</td></tr>
+<tr><td><strong>Default AI policy</strong></td><td>An AI-generated task → model map decides, with per-request classification when no task type is sent.</td></tr>
+</tbody>
+</table></div>
+<p>There's also a <strong>Clear response cache</strong> button here. Identical repeat requests are served from cache before routing runs, so clear it when you're testing a change.</p>
+
+<h3 id="guardrail">Tuning the cost guardrail</h3>
+<p>When the mode is <strong>Cost guardrail</strong>, a policy editor appears below:</p>
+<ul>
+<li><strong>Mode:</strong> <em>Conservative</em> downgrades only premium-tier models. <em>Aggressive</em> downgrades anything costlier than the target.</li>
+<li><strong>Eligible task types:</strong> tick the cheap task types that should be downgraded when matched.</li>
+<li><strong>Downgrade target per provider:</strong> for each connected provider, choose the lighter model that eligible tasks fall back to.</li>
+</ul>
+<p>Click <strong>Save policy</strong>, or <strong>Reset to defaults</strong> to restore the shipped settings.</p>
+
+<h3 id="ai-policy">Generating an AI routing policy</h3>
+<p>When the mode is <strong>Default AI policy</strong>, Arbr assigns a model to each task type from your available models. You generate a starting point, review the projected impact, then hand-tune it.</p>
+
+<figure>
+  <img src="/docs/dashboard/img/routing-ai-policy.png" alt="The automated routing tab with the AI policy editor: mode selector, Optimize-for buttons, and the task-to-model tier cards" />
+  <figcaption>The Automated routing tab with the AI policy editor. Pick an optimisation goal, generate, then edit any task's model in the tier cards.</figcaption>
+</figure>
+
+<ol>
+<li>Choose an <strong>Optimize for</strong> goal: <strong>Cost</strong>, <strong>Balanced</strong>, or <strong>Quality</strong>.</li>
+<li>Click <strong>Generate with AI</strong> and confirm. This overwrites the current assignments with AI-generated ones (it can't be undone, so it asks first).</li>
+<li>Review the <strong>Projected impact</strong> panel: projected cost against current cost, a capability index, and a per-task preview of what changed. Click <strong>Re-simulate</strong> after any manual edit to refresh it.</li>
+<li>Fine-tune in the <strong>Light</strong>, <strong>Medium</strong>, and <strong>Complex</strong> tier cards. Expand a tier and change any task's model from the dropdown ("(use default)" leaves it on the default model).</li>
+<li>Click <strong>Save edits</strong> to persist manual changes.</li>
+</ol>
+<p>Any task type without an assignment falls back to the default model, and is flagged so you know to regenerate. When a request arrives with no task type, Arbr classifies it per-call using the default model.</p>
+
+<h2 id="per-app">Per-application overrides</h2>
+<p>A single application can route differently from the global policy. Open it from the <strong>Applications</strong> page and go to its <strong>Routing policy</strong> tab. There you can restrict the app to a subset of <strong>allowed models</strong> (anything deselected is blocked at the gateway) and generate a policy tuned for that app's own traffic, with the same Cost / Balanced / Quality goal and projected-impact preview.</p>
+
+<h2 id="recap">Putting it together</h2>
+<ol>
+<li><strong>Connect</strong> a provider and import its models (Models page).</li>
+<li>Add any <strong>deterministic rules</strong> you need (Routing → Rules).</li>
+<li>Pick an <strong>automated mode</strong> (Routing → Automated routing).</li>
+<li><strong>Generate and tune</strong> the policy, checking the projected impact.</li>
+<li><strong>Clear the response cache</strong> and send test traffic to confirm the routing.</li>
+</ol>
+<p>Every decision is reversible from the dashboard in seconds, and each served request records which rule or policy decided it, visible in the <a href="/docs/dashboard/#requests">request log</a>.</p>
+
+      <footer class="docs-footer">
+        <p>Arbr is open source under the MIT license. Found something out of date?
+        <a href="https://github.com/project-arbr/arbr-control-plane/tree/main/docs" target="_blank" rel="noopener">Edit the source docs on GitHub ↗</a></p>
+        <p>© 2026 Arbr · <a href="/">projectarbr.org</a></p>
+      </footer>
+    </main>
+
+    <aside class="toc">
+      <p class="toc-title">On this page</p>
+      <a href="#connect">Connect a provider</a>
+      <a href="#rules">Deterministic rules</a>
+      <a href="#automated">Automated routing</a>
+      <a href="#ai-policy">AI routing policy</a>
+      <a href="#per-app">Per-application overrides</a>
+      <a href="#recap">Putting it together</a>
+    </aside>
+  </div>
+
+  <script>
+    // Copy buttons for code blocks, same behaviour as the marketing page.
+    document.querySelectorAll(".codeblock").forEach(function (block) {
+      var btn = document.createElement("button");
+      btn.className = "copy-btn";
+      btn.type = "button";
+      btn.textContent = "Copy";
+      btn.addEventListener("click", function () {
+        var code = block.querySelector("pre");
+        navigator.clipboard.writeText(code ? code.innerText : "").then(function () {
+          btn.textContent = "Copied";
+          setTimeout(function () { btn.textContent = "Copy"; }, 1400);
+        });
+      });
+      block.appendChild(btn);
+    });
+  </script>
+</body>
+</html>

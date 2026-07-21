@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Run model evaluations in the Arbr console: benchmarks and the quality-per-dollar leaderboard, offline evals, shadow campaigns, and canary rollouts." />
+  <title>Model evals · Arbr docs</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="preload" href="/fonts/inter-var-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="/docs/docs.css" />
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Arbr home">
+      <img src="/assets/arbr-wordmark.svg" alt="Arbr" />
+      <span class="tag">Docs</span>
+    </a>
+    <div class="topbar-actions">
+      <a class="btn btn-light btn-hide-mobile" href="/">← Home</a>
+      <a class="btn btn-dark" href="https://github.com/project-arbr/arbr-control-plane" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+  </header>
+
+  <div class="shell">
+    <nav class="sidebar">
+      <div class="group">
+        <p class="group-title">Get started</p>
+        <a href="/docs/">Overview</a>
+      </div>
+      <div class="group">
+        <p class="group-title">Dashboard</p>
+        <a href="/docs/dashboard/">Dashboard tour</a>
+        <a href="/docs/dashboard/routing/">Setting up routing</a>
+        <a href="/docs/dashboard/evals/" class="active">Model evals</a>
+        <a href="/docs/dashboard/governance/">Governance & admin</a>
+      </div>
+      <div class="group">
+        <p class="group-title">Core</p>
+        <a href="/docs/gateway/">Gateway</a>
+        <a href="/docs/routing/">Routing</a>
+        <a href="/docs/providers/">Providers & models</a>
+      </div>
+      <div class="group">
+        <p class="group-title">Operate</p>
+        <a href="/docs/budgets-governance/">Budgets & governance</a>
+        <a href="/docs/deployment/">Deployment</a>
+      </div>
+      <div class="group">
+        <p class="group-title">Build</p>
+        <a href="/docs/sdks/">SDKs</a>
+      </div>
+    </nav>
+
+    <main class="content">
+      <details class="mobile-nav">
+      <summary>Model evals &nbsp;·&nbsp; menu</summary>
+      <div class="m-links">
+        <a href="/docs/">Overview</a>
+        <a href="/docs/dashboard/">Dashboard tour</a>
+        <a href="/docs/dashboard/routing/">Setting up routing</a>
+        <a href="/docs/dashboard/evals/" class="active">Model evals</a>
+        <a href="/docs/dashboard/governance/">Governance & admin</a>
+        <a href="/docs/gateway/">Gateway</a>
+        <a href="/docs/routing/">Routing</a>
+        <a href="/docs/providers/">Providers & models</a>
+        <a href="/docs/budgets-governance/">Budgets & governance</a>
+        <a href="/docs/deployment/">Deployment</a>
+        <a href="/docs/sdks/">SDKs</a>
+      </div>
+    </details>
+      
+<p class="kicker">Dashboard</p>
+<h1>Model evals</h1>
+<p class="lede">Prove a cheaper model is no worse than the current one before it ever serves real traffic. Model Evals (sidebar → Route → Model Evals) is a pipeline: test offline, then shadow live traffic, then canary a small slice, then promote.</p>
+
+<figure>
+  <img src="/docs/dashboard/img/model-evals.png" alt="The Model Evals page showing the four-stage pipeline with the Benchmarks and Evals cards" />
+  <figcaption>Model Evals is organised as four stages. Each one raises confidence without exposing users to an unproven model.</figcaption>
+</figure>
+
+<h2 id="pipeline">The four stages</h2>
+<div class="table-scroll"><table>
+<thead><tr><th>Stage</th><th>What happens</th></tr></thead>
+<tbody>
+<tr><td><strong>1 · Offline eval</strong></td><td>Replay past traffic through a candidate and judge it against the baseline. No production impact.</td></tr>
+<tr><td><strong>2 · Shadow</strong></td><td>Mirror a sample of live traffic to the candidate without serving its responses, judged against the current model. A real-traffic check with no user impact.</td></tr>
+<tr><td><strong>3 · Canary</strong></td><td>Send a small slice of real traffic to a proven candidate, auto-rolling back if it breaches a guardrail.</td></tr>
+<tr><td><strong>4 · Promote</strong></td><td>Make the winning candidate a routing rule.</td></tr>
+</tbody>
+</table></div>
+<p>At the top, an <strong>Adoption</strong> panel tracks the production-truth signal: how many recommendations were accepted or dismissed, how many canaries were promoted or rolled back, and how many changes were pushed through without a passed eval.</p>
+
+<h2 id="benchmarks">Benchmarks</h2>
+<p>A benchmark is a named, frozen set of one application's traffic. Score any model against the same set and rank them by quality-per-dollar on <em>your</em> workload, since a generic leaderboard doesn't predict your traffic.</p>
+<p>Create one under <strong>New benchmark</strong> (Name, Application, and a Baseline model that actually served that app). Open it to reach the <strong>leaderboard</strong>, ranked by quality per dollar. From there you can:</p>
+<ul>
+<li><strong>Score a model</strong> against the set, optionally with a judge. Suggested candidates (connected models cheaper than the baseline, not yet scored) appear as one-click chips.</li>
+<li>Weight the results with <strong>cases</strong>: pin specific requests and mark each trivial, normal, or critical. Critical cases count more toward the worse-rate.</li>
+</ul>
+<p>The leaderboard's <strong>Judge check</strong> column flags whether the judge showed position bias (unbiased / some bias / biased), so you can trust or discount its verdict.</p>
+
+<div class="note warn">
+<span class="note-label">Pick a fair judge</span>
+<p>If the judge and the candidate share a model family, Arbr warns you. A model judging its own family tends to favour it. Prefer a different-family judge for an honest verdict.</p>
+</div>
+
+<h2 id="offline">Running an offline eval</h2>
+<p>An eval replays an application's recent single-shot traffic through a candidate and judges it against the baseline. It works for any candidate, not only recommended ones.</p>
+<p>Under <strong>New eval</strong>, pick the <strong>Application</strong>, the <strong>Baseline (current)</strong> model, the <strong>Candidate</strong> to test, and optionally a <strong>Judge</strong> (without one, it does format checks only). Click <strong>Run eval</strong>. The run appears in the table below. Refresh for the verdict.</p>
+
+<h3>Reading the outcome</h3>
+<p>An eval outcome is a real result, not a pass/fail switch. The vocabulary matters:</p>
+<div class="table-scroll"><table>
+<thead><tr><th>Outcome</th><th>Meaning</th></tr></thead>
+<tbody>
+<tr><td><span class="pill">Safe to switch</span></td><td>The candidate held up. Take it down the pipeline.</td></tr>
+<tr><td><span class="pill">Not recommended</span></td><td>A valid result: the candidate was measurably worse.</td></tr>
+<tr><td><span class="pill">Inconclusive</span></td><td>Nothing could be judged (often no judge, or no usable output).</td></tr>
+<tr><td><span class="pill">Couldn't complete</span></td><td>The run errored before finishing.</td></tr>
+<tr><td><span class="pill">Queued</span> / <span class="pill">Running</span></td><td>Still in progress.</td></tr>
+</tbody>
+</table></div>
+<p>Open <strong>Evidence</strong> on any run to see the judged / worse-rate / format-pass / cost-saving tiles, the summary, and the <strong>worst candidate examples</strong> with the judge's rationale. You can <strong>override the judge</strong> on any example (mark it better, equal, or worse), which re-scores the run, and <strong>Export CSV</strong> for the full record.</p>
+
+<h2 id="shadow">Shadow campaigns</h2>
+<p>A shadow campaign mirrors a sampled slice of an application's live traffic to a candidate <em>without</em> serving the candidate's responses, judges candidate against current, and notifies you when it looks safe to switch.</p>
+<p>Under <strong>New shadow-eval campaign</strong>, set the Application and Candidate, an optional Judge, a <strong>sample rate</strong>, a <strong>min pairs to notify</strong>, and a <strong>max loss rate</strong>. Starting a campaign requires a passed offline eval first. If you don't have one, an override dialog asks for a reason. The campaign detail shows win / tie / loss, cost and latency deltas, and recent judged pairs you can inspect side by side.</p>
+
+<h2 id="canary">Canary and promote</h2>
+<p>A canary sends a small, deterministic slice of auto-routed traffic to an eval-approved candidate, and <strong>auto-rolls-back</strong> the moment it breaches a guardrail (error rate, latency, cost, or worse-rate). Each experiment shows its rollout percentage, scope, and live error rate and cost saving.</p>
+<p>When you're satisfied, <strong>Promote</strong> turns the canary into a routing rule. <strong>Roll back</strong> ends it and records the reason. A passed eval or an accepted <a href="/docs/dashboard/#recommendations">recommendation</a> is what starts a canary.</p>
+
+<div class="note">
+<span class="note-label">Where this connects</span>
+<p>The Recommendations page uses this exact pipeline: accepting a recommendation walks it through build-dataset → run-eval → start-canary. For the governance side of rollouts (budgets and guardrails), see <a href="/docs/dashboard/governance/">Governance &amp; administration</a>.</p>
+</div>
+
+      <footer class="docs-footer">
+        <p>Arbr is open source under the MIT license. Found something out of date?
+        <a href="https://github.com/project-arbr/arbr-control-plane/tree/main/docs" target="_blank" rel="noopener">Edit the source docs on GitHub ↗</a></p>
+        <p>© 2026 Arbr · <a href="/">projectarbr.org</a></p>
+      </footer>
+    </main>
+
+    <aside class="toc">
+      <p class="toc-title">On this page</p>
+      <a href="#pipeline">The four stages</a>
+      <a href="#benchmarks">Benchmarks</a>
+      <a href="#offline">Running an offline eval</a>
+      <a href="#shadow">Shadow campaigns</a>
+      <a href="#canary">Canary and promote</a>
+    </aside>
+  </div>
+
+  <script>
+    // Copy buttons for code blocks, same behaviour as the marketing page.
+    document.querySelectorAll(".codeblock").forEach(function (block) {
+      var btn = document.createElement("button");
+      btn.className = "copy-btn";
+      btn.type = "button";
+      btn.textContent = "Copy";
+      btn.addEventListener("click", function () {
+        var code = block.querySelector("pre");
+        navigator.clipboard.writeText(code ? code.innerText : "").then(function () {
+          btn.textContent = "Copied";
+          setTimeout(function () { btn.textContent = "Copy"; }, 1400);
+        });
+      });
+      block.appendChild(btn);
+    });
+  </script>
+</body>
+</html>
