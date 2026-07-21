@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Deploy Arbr with Docker Compose — the production fail-closed profile, TLS and reverse-proxy config, a GCP VM walkthrough, and configuration." />
-  <title>Deployment — Arbr docs</title>
+  <meta name="description" content="Deploy Arbr with Docker Compose: the production fail-closed profile, TLS and reverse-proxy config, a GCP VM walkthrough, and configuration." />
+  <title>Deployment · Arbr docs</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="preload" href="/fonts/inter-var-latin.woff2" as="font" type="font/woff2" crossorigin />
@@ -61,7 +61,7 @@
       
 <p class="kicker">Operate</p>
 <h1>Deployment</h1>
-<p class="lede">Arbr runs as one container on one port — gateway, admin API, and dashboard together, like a LiteLLM proxy or an MLflow tracking server. Put TLS in front of it and you're in production.</p>
+<p class="lede">Arbr runs as one container on one port, with the gateway, admin API, and dashboard together, like a LiteLLM proxy or an MLflow tracking server. Put TLS in front of it and you're in production.</p>
 
 <h2 id="model">The deployment model</h2>
 <p>One standalone instance per organisation. Everything is served on a single port (default <code>4100</code>): the gateway at <code>/v1/*</code>, the admin API at <code>/api/*</code>, the dashboard at <code>/</code>, and <code>/health</code>. State lives in MongoDB.</p>
@@ -76,7 +76,7 @@
 <li>Set <code>ARBR_ADMIN_KEY</code> and <code>ARBR_ENCRYPTION_KEY</code> to strong random values.</li>
 <li>Set <code>SEED_ON_BOOT=false</code> (seeding wipes request records).</li>
 <li>Terminate TLS in front and keep port 4100 private.</li>
-<li>Choose an <code>ARBR_AUTH_MODE</code> — <code>oidc</code> or <code>trusted-header</code> for per-user accountability.</li>
+<li>Choose an <code>ARBR_AUTH_MODE</code>. Use <code>oidc</code> or <code>trusted-header</code> for per-user accountability.</li>
 </ul>
 
 <h2 id="tls">TLS &amp; reverse proxy</h2>
@@ -92,10 +92,10 @@
 <p>Behind an ALB, set the idle timeout to at least 300s so long streams aren't cut.</p>
 
 <h2 id="gcp">Deploy on GCP</h2>
-<p>The docs include a step-by-step guide for a single <strong>Compute Engine VM</strong> running the production Docker Compose profile — an e2-medium on Ubuntu, Docker + nginx + certbot, the app behind nginx with a Let's Encrypt certificate, and port 4100 blocked at the VPC firewall so only nginx is public. A gated image-based deploy (<code>ops/deploy.sh</code>) pulls a published, CI-green image, health-checks <code>/health</code>, and rolls back automatically on failure.</p>
+<p>The docs include a step-by-step guide for a single <strong>Compute Engine VM</strong> running the production Docker Compose profile. It walks through an e2-medium on Ubuntu, Docker with nginx and certbot, the app behind nginx with a Let's Encrypt certificate, and port 4100 blocked at the VPC firewall so only nginx is public. A gated image-based deploy (<code>ops/deploy.sh</code>) pulls a published, CI-green image, health-checks <code>/health</code>, and rolls back automatically on failure.</p>
 
 <h2 id="config">Configuration</h2>
-<p>Environment variables cover infrastructure and secrets; runtime behaviour is managed in the dashboard and stored in MongoDB.</p>
+<p>Environment variables cover infrastructure and secrets. Runtime behaviour is managed in the dashboard and stored in MongoDB.</p>
 
 <h3>Key environment variables</h3>
 <div class="table-scroll"><table>
@@ -103,19 +103,19 @@
 <tbody>
 <tr><td><code>PORT</code></td><td><code>4100</code></td><td>Listen port.</td></tr>
 <tr><td><code>MONGO_URI</code></td><td>local</td><td>MongoDB connection string.</td></tr>
-<tr><td><code>ARBR_ADMIN_KEY</code></td><td>—</td><td>Master admin key. Required in production.</td></tr>
-<tr><td><code>ARBR_ENCRYPTION_KEY</code></td><td>—</td><td>Encrypts stored provider credentials. Required in production.</td></tr>
-<tr><td><code>ARBR_AUTH_MODE</code></td><td><code>adminkey</code></td><td><code>adminkey</code> | <code>oidc</code> | <code>trusted-header</code>.</td></tr>
+<tr><td><code>ARBR_ADMIN_KEY</code></td><td>none</td><td>Master admin key. Required in production.</td></tr>
+<tr><td><code>ARBR_ENCRYPTION_KEY</code></td><td>none</td><td>Encrypts stored provider credentials. Required in production.</td></tr>
+<tr><td><code>ARBR_AUTH_MODE</code></td><td><code>adminkey</code></td><td><code>adminkey</code>, <code>oidc</code>, or <code>trusted-header</code>.</td></tr>
 <tr><td><code>ARBR_DEFAULT_MAX_TOKENS</code></td><td><code>4096</code></td><td>Default completion cap, clamped per model.</td></tr>
 <tr><td><code>ARBR_FALLBACK_SCOPE</code></td><td><code>same-provider</code></td><td>How far fallback may reach on provider error.</td></tr>
 <tr><td><code>SEED_ON_BOOT</code></td><td><code>false</code></td><td>Seed demo data on boot. <strong>Wipes request records.</strong></td></tr>
 </tbody>
 </table></div>
-<p>Provider keys (<code>OPENAI_API_KEY</code> and friends) are covered under <a href="/docs/providers/#connect">Providers</a>. Routing mode, Require API keys, budgets, default model, rules, and the AI policy are <strong>runtime settings</strong> — they live in MongoDB and are managed in the dashboard, not in the environment.</p>
+<p>Provider keys (<code>OPENAI_API_KEY</code> and friends) are covered under <a href="/docs/providers/#connect">Providers</a>. Routing mode, Require API keys, budgets, default model, rules, and the AI policy are <strong>runtime settings</strong>. They live in MongoDB and are managed in the dashboard, not in the environment.</p>
 
 <div class="note">
 <span class="note-label">Full guides</span>
-<p>The complete deployment and GCP walkthroughs, plus the full env-var reference, are on GitHub — <a href="https://github.com/project-arbr/arbr-control-plane/blob/main/docs/deployment.md" target="_blank" rel="noopener">deployment ↗</a> · <a href="https://github.com/project-arbr/arbr-control-plane/blob/main/docs/deployment-gcp.md" target="_blank" rel="noopener">deploy on GCP ↗</a> · <a href="https://github.com/project-arbr/arbr-control-plane/blob/main/docs/configuration.md" target="_blank" rel="noopener">configuration ↗</a>.</p>
+<p>The complete deployment and GCP walkthroughs, plus the full env-var reference, are on GitHub: <a href="https://github.com/project-arbr/arbr-control-plane/blob/main/docs/deployment.md" target="_blank" rel="noopener">deployment ↗</a>, <a href="https://github.com/project-arbr/arbr-control-plane/blob/main/docs/deployment-gcp.md" target="_blank" rel="noopener">deploy on GCP ↗</a>, and <a href="https://github.com/project-arbr/arbr-control-plane/blob/main/docs/configuration.md" target="_blank" rel="noopener">configuration ↗</a>.</p>
 </div>
 
       <footer class="docs-footer">
@@ -136,7 +136,7 @@
   </div>
 
   <script>
-    // Copy buttons for code blocks — same behaviour as the marketing page.
+    // Copy buttons for code blocks, same behaviour as the marketing page.
     document.querySelectorAll(".codeblock").forEach(function (block) {
       var btn = document.createElement("button");
       btn.className = "copy-btn";

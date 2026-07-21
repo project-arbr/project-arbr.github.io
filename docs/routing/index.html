@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="How Arbr decides which model serves a deferred request — modes, the precedence ladder, task classification, difficulty, and explainability." />
-  <title>Routing — Arbr docs</title>
+  <meta name="description" content="How Arbr decides which model serves a deferred request: modes, the precedence ladder, task classification, difficulty, and explainability." />
+  <title>Routing · Arbr docs</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="preload" href="/fonts/inter-var-latin.woff2" as="font" type="font/woff2" crossorigin />
@@ -61,7 +61,7 @@
       
 <p class="kicker">Core</p>
 <h1>Routing</h1>
-<p class="lede">A pinned model is always honored. When an application defers with <code>model: "auto"</code>, Arbr decides which model serves the request — using only the rules and policies a human has enabled, and always explaining why.</p>
+<p class="lede">A pinned model is always honored. When an application defers with <code>model: "auto"</code>, Arbr decides which model serves the request, using only the rules and policies a human has enabled. It always explains why.</p>
 
 <h2 id="modes">Routing modes</h2>
 <p>Routing has three modes, set globally in the dashboard:</p>
@@ -69,41 +69,41 @@
 <thead><tr><th>Mode</th><th>Behaviour</th></tr></thead>
 <tbody>
 <tr><td><strong>Off</strong></td><td>Deferred requests go to the default model. No automated substitution.</td></tr>
-<tr><td><strong>Cost guardrail</strong></td><td>Cheap task types are routed to a lighter target model; everything else uses the default.</td></tr>
+<tr><td><strong>Cost guardrail</strong></td><td>Cheap task types go to a lighter target model. Everything else uses the default.</td></tr>
 <tr><td><strong>AI routing</strong></td><td>A human-approved, AI-generated task→model policy decides, informed by a task classification of each request.</td></tr>
 </tbody>
 </table></div>
 
 <h2 id="precedence">The precedence ladder</h2>
-<p>Every request resolves top-to-bottom. The first rule that applies wins.</p>
+<p>Every request resolves top to bottom. The first rule that applies wins.</p>
 <div class="table-scroll"><table>
 <thead><tr><th>Order</th><th>Stage</th><th><code>routingDecision</code></th></tr></thead>
 <tbody>
-<tr><td>1</td><td><strong>Budget enforcement</strong> — a breached cap can block (429) or downgrade to a lighter model. Outranks even an explicit pin.</td><td><span class="pill">budget</span></td></tr>
-<tr><td>2</td><td><strong>Explicit pin</strong> — a specific <code>model</code> is served as-is, skipping all policy. Works for unregistered pass-through models too.</td><td><span class="pill">explicit</span> <span class="pill">passthrough</span></td></tr>
-<tr><td>3a</td><td><strong>Cache</strong> — an exact-match hit on a recent identical request.</td><td><span class="pill">cache</span></td></tr>
-<tr><td>3b</td><td><strong>Human rules</strong> — a rule an operator enabled matches (by task type, application, or workflow).</td><td><span class="pill">rule</span></td></tr>
-<tr><td>3c</td><td><strong>Automated routing</strong> — the cost guardrail or the AI policy chooses.</td><td><span class="pill">auto</span> <span class="pill">ai</span></td></tr>
-<tr><td>3d</td><td><strong>Default</strong> — nothing else applied.</td><td><span class="pill">passthrough</span></td></tr>
-<tr><td>4</td><td><strong>Fallback</strong> — the chosen provider errored; Arbr retries another live one (scope configurable).</td><td><span class="pill">fallback</span></td></tr>
+<tr><td>1</td><td><strong>Budget enforcement.</strong> A breached cap can block (429) or downgrade to a lighter model. Outranks even an explicit pin.</td><td><span class="pill">budget</span></td></tr>
+<tr><td>2</td><td><strong>Explicit pin.</strong> A specific <code>model</code> is served as-is, skipping all policy. Works for unregistered pass-through models too.</td><td><span class="pill">explicit</span> <span class="pill">passthrough</span></td></tr>
+<tr><td>3a</td><td><strong>Cache.</strong> An exact-match hit on a recent identical request.</td><td><span class="pill">cache</span></td></tr>
+<tr><td>3b</td><td><strong>Human rules.</strong> A rule an operator enabled matches, by task type, application, or workflow.</td><td><span class="pill">rule</span></td></tr>
+<tr><td>3c</td><td><strong>Automated routing.</strong> The cost guardrail or the AI policy chooses.</td><td><span class="pill">auto</span> <span class="pill">ai</span></td></tr>
+<tr><td>3d</td><td><strong>Default.</strong> Nothing else applied.</td><td><span class="pill">passthrough</span></td></tr>
+<tr><td>4</td><td><strong>Fallback.</strong> The chosen provider errored, so Arbr retries another live one (scope configurable).</td><td><span class="pill">fallback</span></td></tr>
 </tbody>
 </table></div>
-<p>The full <code>routingDecision</code> enum: <code>explicit</code>, <code>passthrough</code>, <code>rule</code>, <code>auto</code>, <code>ai</code>, <code>cache</code>, <code>fallback</code>, <code>budget</code>. Every served request carries the value that decided it, so nothing is a black box.</p>
+<p>The full <code>routingDecision</code> enum is <code>explicit</code>, <code>passthrough</code>, <code>rule</code>, <code>auto</code>, <code>ai</code>, <code>cache</code>, <code>fallback</code>, <code>budget</code>. Every served request carries the value that decided it, so nothing is a black box.</p>
 
 <h2 id="classification">Task classification</h2>
 <p>To route by task, Arbr first classifies each deferred request. It records how it did so in <code>classifiedBy</code>:</p>
 <div class="table-scroll"><table>
 <thead><tr><th>Value</th><th>Meaning</th></tr></thead>
 <tbody>
-<tr><td><span class="pill">provided</span></td><td>The caller passed <code>taskType</code> explicitly — always trusted.</td></tr>
+<tr><td><span class="pill">provided</span></td><td>The caller passed <code>taskType</code> explicitly. Always trusted.</td></tr>
 <tr><td><span class="pill">keyword</span></td><td>A deterministic keyword heuristic matched the prompt.</td></tr>
-<tr><td><span class="pill">ai</span></td><td>A short LLM call classified it (only under AI routing, when the keyword pass is inconclusive). Cached by prompt.</td></tr>
+<tr><td><span class="pill">ai</span></td><td>A short LLM call classified it, only under AI routing and only when the keyword pass is inconclusive. Cached by prompt.</td></tr>
 </tbody>
 </table></div>
-<p>The default cheap task types — the ones a cost guardrail moves to a lighter model — are <code>classification</code>, <code>extraction</code>, <code>summarisation</code>, <code>translation</code>, <code>faq</code>, and <code>support response</code>.</p>
+<p>A cost guardrail moves these default cheap task types to a lighter model: <code>classification</code>, <code>extraction</code>, <code>summarisation</code>, <code>translation</code>, <code>faq</code>, and <code>support response</code>.</p>
 
 <h2 id="difficulty">Difficulty-aware routing</h2>
-<p>Under AI routing, the classifier also scores difficulty 1–10, so an easy request and a hard one with the same task type can route differently:</p>
+<p>Under AI routing, the classifier also scores difficulty from 1 to 10, so an easy request and a hard one with the same task type can route differently:</p>
 <ul>
 <li><strong>Easy</strong> (≤3) → a cheaper model.</li>
 <li><strong>Normal</strong> (4–7) → the default for that task.</li>
@@ -112,11 +112,11 @@
 <p>A confidence below 0.5 is ignored, so a low-confidence guess never overrides the base policy.</p>
 
 <h2 id="explainability">Explainability</h2>
-<p>Alongside <code>routingDecision</code>, Arbr logs a <code>routingExplain</code> object capturing the non-derivable "why" — which rule matched, which policy source and base were used, the default scope, and any later override such as a fallback or a budget downgrade. The dashboard narrates the decision from these fields.</p>
+<p>Alongside <code>routingDecision</code>, Arbr logs a <code>routingExplain</code> object that captures the non-obvious "why": which rule matched, which policy source and base were used, the default scope, and any later override such as a fallback or a budget downgrade. The dashboard narrates the decision from these fields.</p>
 
 <div class="note">
 <span class="note-label">By design</span>
-<p>Arbr never reroutes autonomously — <code>auto</code> follows only the rules and policies a human enabled, and every one is reversible from the dashboard in seconds. Routing decides on task type and difficulty, not embeddings or output-quality scoring. Evaluation (see <a href="/docs/budgets-governance/#recommendations">Recommendations</a>) measures whether a candidate holds up, but does not feed routing automatically — a person always approves.</p>
+<p>Arbr never reroutes autonomously. <code>auto</code> follows only the rules and policies a human enabled, and every one is reversible from the dashboard in seconds. Routing decides on task type and difficulty, not embeddings or output-quality scoring. Evaluation (see <a href="/docs/budgets-governance/#recommendations">Recommendations</a>) measures whether a candidate holds up, but it doesn't feed routing automatically. A person always approves.</p>
 </div>
 
 <div class="note">
@@ -142,7 +142,7 @@
   </div>
 
   <script>
-    // Copy buttons for code blocks — same behaviour as the marketing page.
+    // Copy buttons for code blocks, same behaviour as the marketing page.
     document.querySelectorAll(".codeblock").forEach(function (block) {
       var btn = document.createElement("button");
       btn.className = "copy-btn";

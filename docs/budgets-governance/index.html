@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Cost caps, gateway API keys, admin authentication modes and roles, the audit log, evidence-gated recommendations, and the application kill switch." />
-  <title>Budgets & governance — Arbr docs</title>
+  <title>Budgets & governance · Arbr docs</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="preload" href="/fonts/inter-var-latin.woff2" as="font" type="font/woff2" crossorigin />
@@ -61,7 +61,7 @@
       
 <p class="kicker">Operate</p>
 <h1>Budgets &amp; governance</h1>
-<p class="lede">Policy that acts before inference. Cost caps, rate limits, API-key attribution, and application kill switches sit in the data path — effective regardless of which provider or model a developer requests.</p>
+<p class="lede">Policy that acts before inference. Cost caps, rate limits, API-key attribution, and application kill switches sit in the data path. They stay effective no matter which provider or model a developer requests.</p>
 
 <h2 id="budgets">Budgets &amp; caps</h2>
 <p>A cap limits spend over a rolling window. Each cap has a dimension, a period, a limit, and an action:</p>
@@ -71,10 +71,10 @@
 <tr><td>Dimension</td><td><code>application</code>, <code>provider</code>, <code>department</code>, <code>workflow</code>, <code>model</code>, or global</td></tr>
 <tr><td>Period</td><td><code>day</code> or <code>month</code></td></tr>
 <tr><td>Limit</td><td>A dollar amount</td></tr>
-<tr><td>Action</td><td><code>alert</code> · <code>downgrade</code> · <code>block</code></td></tr>
+<tr><td>Action</td><td><code>alert</code>, <code>downgrade</code>, or <code>block</code></td></tr>
 </tbody>
 </table></div>
-<p><strong>Downgrade</strong> and <strong>block</strong> are enforced in the data path, before routing — a breached block cap returns <code>429</code> and outranks even an explicit model pin. Enforcement at the gateway covers global, application, and provider caps; other dimensions are tracked for visibility. Manage caps via the dashboard or the admin API:</p>
+<p><strong>Downgrade</strong> and <strong>block</strong> are enforced in the data path, before routing. A breached block cap returns <code>429</code> and outranks even an explicit model pin. Gateway enforcement covers global, application, and provider caps, and other dimensions are tracked for visibility. Manage caps from the dashboard or the admin API:</p>
 <div class="codeblock"><span class="lang">sh</span><pre><code>curl -X POST http://localhost:4100/api/caps \
   -H 'Authorization: Bearer $ARBR_ADMIN_KEY' \
   -H 'Content-Type: application/json' \
@@ -84,9 +84,9 @@
 <h2 id="api-keys">Gateway API keys</h2>
 <p>Data-plane keys (prefix <code>ab_</code>) authenticate application traffic. Each key:</p>
 <ul>
-<li>binds <strong>attribution</strong> — the application and department tied to the key override whatever a request body claims;</li>
-<li>can enforce a per-key <strong>requests-per-minute</strong> rate limit;</li>
-<li>is <strong>shown once</strong> at creation and stored only as a SHA-256 hash.</li>
+<li>binds <strong>attribution</strong>, so the application and department tied to the key override whatever a request body claims</li>
+<li>can enforce a per-key <strong>requests-per-minute</strong> rate limit</li>
+<li>is <strong>shown once</strong> at creation, then stored only as a SHA-256 hash</li>
 </ul>
 <p>Turn on <strong>Require API keys</strong> to reject anonymous gateway calls. Keys support expiry and one-click rotation.</p>
 
@@ -95,7 +95,7 @@
 <div class="table-scroll"><table>
 <thead><tr><th>Mode</th><th>Use</th></tr></thead>
 <tbody>
-<tr><td><code>adminkey</code></td><td>A single master key (<code>ARBR_ADMIN_KEY</code>). Simplest; good for a small team.</td></tr>
+<tr><td><code>adminkey</code></td><td>A single master key (<code>ARBR_ADMIN_KEY</code>). Simplest, and good for a small team.</td></tr>
 <tr><td><code>oidc</code></td><td>Per-user SSO via any OIDC provider, with roles and a per-user audit trail.</td></tr>
 <tr><td><code>trusted-header</code></td><td>Identity asserted by a reverse proxy or Google IAP in front of Arbr.</td></tr>
 </tbody>
@@ -103,21 +103,21 @@
 <p>Under OIDC and trusted-header, each admin action is attributed to a real person. Roles are <strong>viewer</strong>, <strong>operator</strong>, and <strong>administrator</strong>. Every mutation is written to an immutable <strong>audit log</strong>.</p>
 
 <h2 id="recommendations">Recommendations &amp; evidence</h2>
-<p>Arbr's recommendation engine finds where a premium model is repeatedly handling a cheap task, scoped to the application whose traffic justifies the change. A recommendation is a costed suggestion, not an action — accepting one is <strong>quality-gated</strong>:</p>
+<p>Arbr's recommendation engine finds where a premium model is repeatedly handling a cheap task, scoped to the application whose traffic justifies the change. A recommendation is a costed suggestion, not an action. Accepting one is <strong>quality-gated</strong>:</p>
 <ol>
 <li>The engine surfaces a candidate substitution from your own traffic.</li>
 <li>You freeze a representative sample into an evaluation dataset.</li>
 <li>The candidate is replayed against the sample and judged before anything changes.</li>
-<li>On approval, Arbr creates a <strong>disabled</strong> routing rule — you enable it deliberately, and can disable it in seconds.</li>
+<li>On approval, Arbr creates a <strong>disabled</strong> routing rule. You enable it deliberately, and can disable it in seconds.</li>
 </ol>
-<p>Each accepted change records how it was approved (<code>acceptedVia</code>) and whether quality was proven (<code>qualityGate</code>: passed, overridden, or ungated), so a downgrade rolled out on evidence is distinguishable from one waved through.</p>
+<p>Each accepted change records how it was approved (<code>acceptedVia</code>) and whether quality was proven (<code>qualityGate</code>: passed, overridden, or ungated), so a downgrade rolled out on evidence is easy to tell apart from one waved through.</p>
 
 <h2 id="kill-switch">Application kill switch &amp; privacy</h2>
-<p>Each application has a per-app kill switch — flip it and that application's gateway traffic is rejected immediately, without touching anyone else. On the data side: request payload capture is <strong>off by default in production</strong>, PII masking is applied at log time, and request records are purged on a configurable retention window (30 days by default).</p>
+<p>Each application has a kill switch. Flip it and that application's gateway traffic is rejected immediately, without touching anyone else. On the data side, request payload capture is <strong>off by default in production</strong>, PII masking is applied at log time, and request records are purged on a configurable retention window (30 days by default).</p>
 
 <div class="note warn">
 <span class="note-label">Know the limits</span>
-<p>PII masking is log-time redaction, not data-loss prevention — the original prompt still reaches the provider. Budgets allow a soft overshoot of at most one in-flight request. Output guardrails don't apply to streamed responses. See <a href="https://github.com/project-arbr/arbr-control-plane/blob/main/docs/privacy.md" target="_blank" rel="noopener">data privacy ↗</a> and the <a href="https://github.com/project-arbr/arbr-control-plane/blob/main/ARCHITECTURE.md" target="_blank" rel="noopener">architecture notes ↗</a>.</p>
+<p>PII masking is log-time redaction, not data-loss prevention. The original prompt still reaches the provider. Budgets allow a soft overshoot of at most one in-flight request. Output guardrails don't apply to streamed responses. See <a href="https://github.com/project-arbr/arbr-control-plane/blob/main/docs/privacy.md" target="_blank" rel="noopener">data privacy ↗</a> and the <a href="https://github.com/project-arbr/arbr-control-plane/blob/main/ARCHITECTURE.md" target="_blank" rel="noopener">architecture notes ↗</a>.</p>
 </div>
 
       <footer class="docs-footer">
@@ -138,7 +138,7 @@
   </div>
 
   <script>
-    // Copy buttons for code blocks — same behaviour as the marketing page.
+    // Copy buttons for code blocks, same behaviour as the marketing page.
     document.querySelectorAll(".codeblock").forEach(function (block) {
       var btn = document.createElement("button");
       btn.className = "copy-btn";

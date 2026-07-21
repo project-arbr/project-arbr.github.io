@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Arbr is a self-hosted AI gateway and control plane — route, observe, evaluate, and govern every LLM call." />
-  <title>Overview — Arbr docs</title>
+  <meta name="description" content="Arbr is a self-hosted AI gateway and control plane for routing, observing, evaluating, and governing every LLM call." />
+  <title>Overview · Arbr docs</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="preload" href="/fonts/inter-var-latin.woff2" as="font" type="font/woff2" crossorigin />
@@ -60,12 +60,12 @@
     </details>
       
 <p class="kicker">Documentation</p>
-<h1>Arbr — the AI gateway &amp; control plane</h1>
-<p class="lede">Route every model request through one endpoint. See where the money goes, prove a cheaper model holds up on your own traffic, and roll the change out with human approval — then measure what you actually saved.</p>
+<h1>The AI gateway and control plane</h1>
+<p class="lede">Route every model request through one endpoint. See where the money goes, prove a cheaper model holds up on your own traffic, then roll the change out with human approval and measure what you actually saved.</p>
 
-<p>Arbr is a <strong>self-hosted model optimisation and governance control plane</strong> for teams with AI traffic in production. Applications send their requests through one OpenAI-compatible gateway; Arbr logs and costs every call, surfaces where a premium model is doing a cheap model's job, evaluates candidates against representative traffic, and makes every routing change explicit, reversible, and measurable.</p>
+<p>Arbr is a <strong>self-hosted model optimisation and governance control plane</strong> for teams running AI in production. Applications send their requests through one OpenAI-compatible gateway. Arbr logs and costs every call, points out where a premium model is doing a cheap model's job, checks candidate models against your real traffic, and keeps every routing change explicit, reversible, and measurable.</p>
 
-<p>It runs standalone or in front of infrastructure you already operate, including LiteLLM. It is open source under the MIT license.</p>
+<p>It runs on its own or in front of infrastructure you already operate, including LiteLLM. It's open source under the MIT license.</p>
 
 <div class="cards">
   <a class="card" href="/docs/gateway/">
@@ -75,7 +75,7 @@
   </a>
   <a class="card" href="/docs/routing/">
     <h3>Routing</h3>
-    <p>Cost guardrails and human-approved rules — a pinned model is always honored.</p>
+    <p>Cost guardrails and human-approved rules. A pinned model is always honored.</p>
     <span class="go">How routing works →</span>
   </a>
   <a class="card" href="/docs/deployment/">
@@ -86,17 +86,17 @@
 </div>
 
 <h2 id="lifecycle">The optimisation lifecycle</h2>
-<p>Arbr is organised around a loop that turns request-level data into a verified outcome. Nothing reroutes silently; every step leaves evidence.</p>
+<p>Arbr is organised around a loop that turns request-level data into a verified outcome. Nothing reroutes silently, and every step leaves evidence.</p>
 
 <div class="table-scroll"><table>
 <thead><tr><th>Stage</th><th>What happens</th></tr></thead>
 <tbody>
-<tr><td><strong>1 · Observe</strong></td><td>Every request is logged and costed — by application, workflow, model, provider, and task type.</td></tr>
+<tr><td><strong>1 · Observe</strong></td><td>Every request is logged and costed by application, workflow, model, provider, and task type.</td></tr>
 <tr><td><strong>2 · Discover</strong></td><td>The recommendation engine finds where a premium model is handling a cheap task, measured from your own traffic.</td></tr>
 <tr><td><strong>3 · Build evidence</strong></td><td>Freeze a representative sample of that traffic into an evaluation dataset.</td></tr>
 <tr><td><strong>4 · Evaluate</strong></td><td>Replay the candidate model against the sample and judge quality before anything changes.</td></tr>
-<tr><td><strong>5 · Approve &amp; roll out</strong></td><td>A human accepts the change; it becomes a deterministic, reversible routing rule.</td></tr>
-<tr><td><strong>6 · Verify</strong></td><td>Measure the savings actually realised — served model vs requested model, priced on real usage.</td></tr>
+<tr><td><strong>5 · Approve &amp; roll out</strong></td><td>A human accepts the change, and it becomes a deterministic, reversible routing rule.</td></tr>
+<tr><td><strong>6 · Verify</strong></td><td>Measure the savings you actually realised, comparing the model served against the model requested and pricing it on real usage.</td></tr>
 </tbody>
 </table></div>
 
@@ -108,29 +108,29 @@
 </div>
 
 <h2 id="quickstart">Quickstart</h2>
-<p>No API keys are required to explore — Arbr ships with a <strong>demo mode</strong> that seeds realistic data so every dashboard, the recommendation engine, and the routing controls work immediately.</p>
+<p>You don't need API keys to explore. Arbr ships with a <strong>demo mode</strong> that seeds realistic data, so every dashboard, the recommendation engine, and the routing controls work right away.</p>
 
-<h3>Option A — Docker (recommended)</h3>
+<h3>Option A: Docker (recommended)</h3>
 <div class="codeblock"><span class="lang">sh</span><pre><code>git clone https://github.com/project-arbr/arbr-control-plane
 cd arbr-control-plane
 cp .env.example .env
 docker compose up</code></pre></div>
-<p>Open <strong>http://localhost:4100</strong> — the dashboard loads with seeded demo data. Go to <strong>Recommendations → Recompute</strong> to see the engine run.</p>
+<p>Open <strong>http://localhost:4100</strong> and the dashboard loads with seeded demo data. Go to <strong>Recommendations → Recompute</strong> to see the engine run.</p>
 
-<h3>Option B — Local (Node + MongoDB)</h3>
+<h3>Option B: Local (Node + MongoDB)</h3>
 <div class="codeblock"><span class="lang">sh</span><pre><code>git clone https://github.com/project-arbr/arbr-control-plane
 cd arbr-control-plane
 npm run setup   # install deps + seed built-in models + demo request records
 npm run dev     # server on :4100, dashboard on :5173</code></pre></div>
 
 <h3>Add a provider key</h3>
-<p>The demo works with zero keys. To make real calls, open the <strong>Models</strong> page and paste a key for any provider — it goes live immediately, no restart. Or set it in the environment before starting:</p>
+<p>The demo works with zero keys. To make real calls, open the <strong>Models</strong> page and paste a key for any provider. It goes live immediately, with no restart. You can also set it in the environment before starting:</p>
 <div class="codeblock"><span class="lang">env</span><pre><code># .env
 OPENAI_API_KEY=sk-...</code></pre></div>
 <p>Environment variables take precedence over dashboard-stored keys. See <a href="/docs/providers/">Providers &amp; models</a> for the full list.</p>
 
 <h3>Make your first call</h3>
-<p>Once a provider is live, hit the gateway. <code>model: "auto"</code> lets the router decide:</p>
+<p>Once a provider is live, hit the gateway. Passing <code>model: "auto"</code> lets the router decide:</p>
 <div class="codeblock"><span class="lang">sh</span><pre><code>curl -X POST http://localhost:4100/v1/chat \
   -H 'Content-Type: application/json' \
   -d '{
@@ -138,19 +138,19 @@ OPENAI_API_KEY=sk-...</code></pre></div>
     "model": "auto",
     "messages": [{ "role": "user", "content": "Summarise: my card was declined." }]
   }'</code></pre></div>
-<p>The response tells you which model actually served the call and why — see <a href="/docs/gateway/">Gateway</a>.</p>
+<p>The response tells you which model actually served the call and why. See <a href="/docs/gateway/">Gateway</a>.</p>
 
 <h2 id="where-it-fits">Where Arbr fits</h2>
 <ul>
-<li><strong>In front of LiteLLM.</strong> Arbr is an upstream that connects to LiteLLM, not a replacement — you keep LiteLLM's provider breadth and gain routing, evidence, budgets, and governance on top.</li>
-<li><strong>Standalone gateway.</strong> Point any OpenAI-compatible client at Arbr and it works unchanged — change the base URL, keep the SDK.</li>
-<li><strong>Human-governed.</strong> Arbr never reroutes silently; a person approves every routing change and can undo it in seconds.</li>
-<li><strong>Realised, not promised.</strong> Each record stores both the model requested and the model served, so savings are measured after the fact, not estimated up front.</li>
+<li><strong>In front of LiteLLM.</strong> Arbr is an upstream that connects to LiteLLM, not a replacement for it. You keep LiteLLM's provider breadth and add routing, evidence, budgets, and governance on top.</li>
+<li><strong>As a standalone gateway.</strong> Point any OpenAI-compatible client at Arbr and it works unchanged. Change the base URL and keep the SDK.</li>
+<li><strong>Under human control.</strong> Arbr never reroutes silently. A person approves every routing change and can undo it in seconds.</li>
+<li><strong>Measuring real savings.</strong> Each record stores both the model requested and the model served, so savings are measured after the fact rather than estimated up front.</li>
 </ul>
 
 <div class="note">
 <span class="note-label">Honest about scope</span>
-<p>Arbr does <strong>not</strong> reroute autonomously, use embedding-based or output-quality routing, treat PII as a routing signal, or run highly-available across replicas today. Routing decides on task type and difficulty, and evaluation measures quality but does not feed routing automatically. See the <a href="https://github.com/project-arbr/arbr-control-plane/blob/main/ARCHITECTURE.md" target="_blank" rel="noopener">architecture notes</a> for the full list of limitations.</p>
+<p>Today Arbr does <strong>not</strong> reroute autonomously, use embedding-based or output-quality routing, treat PII as a routing signal, or run highly available across replicas. Routing decides on task type and difficulty, and while evaluation measures quality, it doesn't feed routing automatically. The <a href="https://github.com/project-arbr/arbr-control-plane/blob/main/ARCHITECTURE.md" target="_blank" rel="noopener">architecture notes</a> list every limitation.</p>
 </div>
 
 <h2 id="next">Next steps</h2>
@@ -179,7 +179,7 @@ OPENAI_API_KEY=sk-...</code></pre></div>
   </div>
 
   <script>
-    // Copy buttons for code blocks — same behaviour as the marketing page.
+    // Copy buttons for code blocks, same behaviour as the marketing page.
     document.querySelectorAll(".codeblock").forEach(function (block) {
       var btn = document.createElement("button");
       btn.className = "copy-btn";
