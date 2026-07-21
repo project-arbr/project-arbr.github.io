@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="A tour of the Arbr console: the navigation, the Overview page, Applications, the request log, Recommendations, and Arbr overhead." />
+  <title>Dashboard tour · Arbr docs</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="preload" href="/fonts/inter-var-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="/docs/docs.css" />
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Arbr home">
+      <img src="/assets/arbr-wordmark.svg" alt="Arbr" />
+      <span class="tag">Docs</span>
+    </a>
+    <div class="topbar-actions">
+      <a class="btn btn-light btn-hide-mobile" href="/">← Home</a>
+      <a class="btn btn-dark" href="https://github.com/project-arbr/arbr-control-plane" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+  </header>
+
+  <div class="shell">
+    <nav class="sidebar">
+      <div class="group">
+        <p class="group-title">Get started</p>
+        <a href="/docs/">Overview</a>
+      </div>
+      <div class="group">
+        <p class="group-title">Dashboard</p>
+        <a href="/docs/dashboard/" class="active">Dashboard tour</a>
+        <a href="/docs/dashboard/routing/">Setting up routing</a>
+        <a href="/docs/dashboard/evals/">Model evals</a>
+        <a href="/docs/dashboard/governance/">Governance & admin</a>
+      </div>
+      <div class="group">
+        <p class="group-title">Core</p>
+        <a href="/docs/gateway/">Gateway</a>
+        <a href="/docs/routing/">Routing</a>
+        <a href="/docs/providers/">Providers & models</a>
+      </div>
+      <div class="group">
+        <p class="group-title">Operate</p>
+        <a href="/docs/budgets-governance/">Budgets & governance</a>
+        <a href="/docs/deployment/">Deployment</a>
+      </div>
+      <div class="group">
+        <p class="group-title">Build</p>
+        <a href="/docs/sdks/">SDKs</a>
+      </div>
+    </nav>
+
+    <main class="content">
+      <details class="mobile-nav">
+      <summary>Dashboard tour &nbsp;·&nbsp; menu</summary>
+      <div class="m-links">
+        <a href="/docs/">Overview</a>
+        <a href="/docs/dashboard/" class="active">Dashboard tour</a>
+        <a href="/docs/dashboard/routing/">Setting up routing</a>
+        <a href="/docs/dashboard/evals/">Model evals</a>
+        <a href="/docs/dashboard/governance/">Governance & admin</a>
+        <a href="/docs/gateway/">Gateway</a>
+        <a href="/docs/routing/">Routing</a>
+        <a href="/docs/providers/">Providers & models</a>
+        <a href="/docs/budgets-governance/">Budgets & governance</a>
+        <a href="/docs/deployment/">Deployment</a>
+        <a href="/docs/sdks/">SDKs</a>
+      </div>
+    </details>
+      
+<p class="kicker">Dashboard</p>
+<h1>Dashboard tour</h1>
+<p class="lede">The Arbr console is where you watch spend, approve routing changes, and set the guardrails. This is a tour of the observability pages. Setting up routing, running evals, and governance each have their own guide.</p>
+
+<h2 id="navigation">Finding your way around</h2>
+<p>The left sidebar groups every page by what it's for, following the same five stages the product is built around:</p>
+<div class="table-scroll"><table>
+<thead><tr><th>Group</th><th>Pages</th><th>For</th></tr></thead>
+<tbody>
+<tr><td><strong>Connect</strong></td><td>Models, Settings</td><td>Wire providers and applications up to the gateway.</td></tr>
+<tr><td><strong>See</strong></td><td>Overview, Applications</td><td>Know what you're spending, and where.</td></tr>
+<tr><td><strong>Recommend</strong></td><td>Recommendations</td><td>Where a cheaper model would fit.</td></tr>
+<tr><td><strong>Route</strong></td><td>Routing, Model Evals</td><td>Send each request to the right model, with evidence.</td></tr>
+<tr><td><strong>Govern</strong></td><td>Budgets, Governance, Audit, Users</td><td>Limits, guardrails, and records.</td></tr>
+</tbody>
+</table></div>
+<p>The <strong>Users</strong> page only appears to administrators. Two pages aren't in the sidebar: <strong>Arbr overhead</strong> (reached from the Overview tile) and each application's detail page (reached by clicking an application).</p>
+
+<h3>The status chips</h3>
+<p>Every page carries a few chips in the top-right corner, so the system's state is always visible:</p>
+<ul>
+<li>A green <strong>live-providers</strong> chip listing connected providers, or an amber <strong>"Demo"</strong> chip when none are connected.</li>
+<li>A red <strong>"N budgets over"</strong> chip when any cap is breached.</li>
+<li>A <strong>routing-mode</strong> chip ("AI routing" or "Cost guardrail"), hidden when routing is off.</li>
+</ul>
+
+<h2 id="overview">Overview</h2>
+<p>The landing page: total AI usage and cost across the organisation. It has three tabs, and the tab is remembered in the URL.</p>
+
+<figure>
+  <img src="/docs/dashboard/img/overview.png" alt="The Arbr Overview page showing stat tiles, tabs, and the latency breakdown" />
+  <figcaption>The Overview Summary tab. The "Arbr overhead" tile links through to the internal-spend breakdown.</figcaption>
+</figure>
+
+<h3>Summary tab</h3>
+<p>Three rows of stat tiles, then the detail cards:</p>
+<ul>
+<li><strong>Core totals:</strong> Total requests, Total cost (with a note if some requests couldn't be priced), Avg cost / request, and Realised savings.</li>
+<li><strong>Savings trust:</strong> Quality-gated projected $ (accepted after an eval passed), Ungated projected $ (override or no eval), and Gated share. This is how you tell savings backed by evidence from savings taken on trust.</li>
+<li><strong>Caching and overhead:</strong> Cache hit rate, Cached tokens, Cache savings, and <strong>Arbr overhead</strong>. The overhead tile only appears when Arbr has spent something on itself, and it's a link to the full breakdown.</li>
+</ul>
+<p>Below the tiles: a <strong>Latency breakdown</strong> table (total latency, gateway overhead, and streaming TTFT at the 50th / 95th / 99th percentiles), a <strong>Cost &amp; request trend</strong> chart, a <strong>Realised savings by substitution</strong> table (requests that asked for one model but were served a cheaper one, priced at the requested model), and side-by-side <strong>Spend by provider</strong> and <strong>Spend by task type</strong> tables.</p>
+
+<h3>By dimension tab</h3>
+<p>The same spend and latency, grouped by whichever dimension you pick: Application, Team, User, Workflow, Model, Provider, or Task type. One button row, one table.</p>
+
+<h3>Requests tab</h3>
+<p>The full request log. It's covered under <a href="#requests">Requests</a> below, since the same table appears in a few places.</p>
+
+<h2 id="applications">Applications</h2>
+<p>A per-application view with a health signal on each one. Toggle between a <strong>card view</strong> and a <strong>list view</strong> (top-right); your choice is remembered.</p>
+<p>Each application shows a coloured health dot: green (healthy), amber (degraded latency or success rate), red (failing or disconnected), or grey (no requests yet). Disconnected and failing applications sort to the top so problems surface first. Each card carries a <strong>connected / disconnected toggle</strong> that is the application's <a href="/docs/dashboard/governance/#kill-switch">kill switch</a>. Flip it off and that application's traffic is rejected immediately, without affecting anyone else.</p>
+<p>Click an application to open its detail page, which has two tabs:</p>
+<ul>
+<li><strong>Overview</strong> shows the same stats and request log, scoped to that one application.</li>
+<li><strong>Routing policy</strong> holds an <strong>allowed-models</strong> picker (deselected models are blocked at the gateway for this app) and a per-application routing policy that can override the global one. See <a href="/docs/dashboard/routing/#per-app">Per-application overrides</a>.</li>
+</ul>
+
+<h2 id="requests">The request log</h2>
+<p>Every request, with a detail drawer that explains exactly why it routed the way it did. This table appears on the Overview "Requests" tab, on each application's detail page, and on the Arbr overhead page.</p>
+
+<h3>Filtering</h3>
+<p>Across the top: a <strong>period</strong> selector (Today / 7 days / 30 days / All time), a <strong>status</strong> filter (Success / Failure / Blocked), and a <strong>source</strong> filter, where "Routed" means it went through the gateway and "Observed" means it was reported after the fact via <code>POST /v1/ingest</code>. A facet card adds dropdowns for Application, Workflow, Department, Model, Provider, and Task type, plus a search box for a request ID.</p>
+
+<h3>Columns</h3>
+<p>Time, App, Workflow, Task (with a small badge for how it was classified: provided, rule-based, or AI), Served model (showing <em>requested → served</em> when they differ), a coloured Routing badge, Tokens, Cost, and Latency. Non-success rows carry a red "blocked" or amber "failed" badge. <strong>Export CSV</strong> downloads everything matching the current filters.</p>
+
+<h3>The "Why this routing" drawer</h3>
+<p>Click any row to open a drawer with:</p>
+<ul>
+<li>A plain-English explanation of the routing decision, built from the request's own routing record.</li>
+<li>A request-flow strip: App → Classify → Route → (Cache) → Model → Provider.</li>
+<li>Status, latency, and cost tiles, token counts, and any error message.</li>
+<li>The request payload and the response, when payload capture is on (otherwise "not captured").</li>
+</ul>
+
+<h2 id="recommendations">Recommendations</h2>
+<p>Costed suggestions to move a task off a premium model, measured from your own traffic. The system proposes; a human decides. Click <strong>Recompute</strong> to re-analyse the logged data.</p>
+<p>Each pending recommendation shows the current → suggested model, a projected saving, and a three-step tracker: <strong>Build dataset → Run eval → Start canary</strong>. Accepting is gated on evidence: if the recommendation hasn't passed an eval, you're asked for an override reason before it goes through. Accepting creates a routing rule that starts <em>disabled</em>, so nothing changes until you switch it on. This flow runs on the same machinery as <a href="/docs/dashboard/evals/">Model evals</a>.</p>
+<p>When there's nothing to act on, the page says so. If high-spend task types simply aren't marked as "cheap" yet, it surfaces the hidden savings and offers a one-click "Mark cheap &amp; recompute".</p>
+
+<h2 id="overhead">Arbr overhead</h2>
+<p>Reached from the Overview "Arbr overhead" tile. Arbr makes some LLM calls for itself: classifying tasks, generating routing policies, judging evals, and testing connections. That's real money on your provider keys, so it's counted in your total spend but kept out of the per-application views. This page breaks it down <strong>by kind</strong> and <strong>by model</strong>, which is where an unexpectedly expensive internal call shows up. To cut the biggest piece, pin <code>taskType</code> on your requests so the gateway can skip the classifier call.</p>
+
+<div class="note">
+<span class="note-label">Next</span>
+<p>Now that you can read the console, the other three guides show how to act in it: <a href="/docs/dashboard/routing/">set up routing</a>, <a href="/docs/dashboard/evals/">run model evals</a>, and configure <a href="/docs/dashboard/governance/">governance and budgets</a>.</p>
+</div>
+
+      <footer class="docs-footer">
+        <p>Arbr is open source under the MIT license. Found something out of date?
+        <a href="https://github.com/project-arbr/arbr-control-plane/tree/main/docs" target="_blank" rel="noopener">Edit the source docs on GitHub ↗</a></p>
+        <p>© 2026 Arbr · <a href="/">projectarbr.org</a></p>
+      </footer>
+    </main>
+
+    <aside class="toc">
+      <p class="toc-title">On this page</p>
+      <a href="#navigation">Finding your way around</a>
+      <a href="#overview">Overview</a>
+      <a href="#applications">Applications</a>
+      <a href="#requests">The request log</a>
+      <a href="#recommendations">Recommendations</a>
+      <a href="#overhead">Arbr overhead</a>
+    </aside>
+  </div>
+
+  <script>
+    // Copy buttons for code blocks, same behaviour as the marketing page.
+    document.querySelectorAll(".codeblock").forEach(function (block) {
+      var btn = document.createElement("button");
+      btn.className = "copy-btn";
+      btn.type = "button";
+      btn.textContent = "Copy";
+      btn.addEventListener("click", function () {
+        var code = block.querySelector("pre");
+        navigator.clipboard.writeText(code ? code.innerText : "").then(function () {
+          btn.textContent = "Copied";
+          setTimeout(function () { btn.textContent = "Copy"; }, 1400);
+        });
+      });
+      block.appendChild(btn);
+    });
+  </script>
+</body>
+</html>

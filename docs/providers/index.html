@@ -29,6 +29,13 @@
         <a href="/docs/">Overview</a>
       </div>
       <div class="group">
+        <p class="group-title">Dashboard</p>
+        <a href="/docs/dashboard/">Dashboard tour</a>
+        <a href="/docs/dashboard/routing/">Setting up routing</a>
+        <a href="/docs/dashboard/evals/">Model evals</a>
+        <a href="/docs/dashboard/governance/">Governance & admin</a>
+      </div>
+      <div class="group">
         <p class="group-title">Core</p>
         <a href="/docs/gateway/">Gateway</a>
         <a href="/docs/routing/">Routing</a>
@@ -50,6 +57,10 @@
       <summary>Providers & models &nbsp;·&nbsp; menu</summary>
       <div class="m-links">
         <a href="/docs/">Overview</a>
+        <a href="/docs/dashboard/">Dashboard tour</a>
+        <a href="/docs/dashboard/routing/">Setting up routing</a>
+        <a href="/docs/dashboard/evals/">Model evals</a>
+        <a href="/docs/dashboard/governance/">Governance & admin</a>
         <a href="/docs/gateway/">Gateway</a>
         <a href="/docs/routing/">Routing</a>
         <a href="/docs/providers/" class="active">Providers & models</a>
@@ -81,7 +92,7 @@
 <h2 id="connect">Connecting a provider</h2>
 <p>Two ways, and you can mix them:</p>
 <ul>
-<li><strong>Dashboard.</strong> Open <strong>Settings → Connections</strong>, paste a key, and the provider goes live immediately with no restart. Keys are stored encrypted at rest, shown only masked, and never returned to the browser.</li>
+<li><strong>Dashboard.</strong> Open the <strong>Models</strong> page, pick a provider, paste a key, and it goes live immediately with no restart. Keys are stored encrypted at rest, shown only masked, and never returned to the browser. See <a href="/docs/dashboard/routing/#connect">Setting up routing</a> for the step-by-step.</li>
 <li><strong>Environment.</strong> Set the provider's env var before starting. Environment variables take precedence over dashboard-stored keys, which is the recommended path for production.</li>
 </ul>
 
