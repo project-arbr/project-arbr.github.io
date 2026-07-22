@@ -327,6 +327,15 @@
   .topnav-links a.primary { background: var(--ink); color: var(--paper); }
   .topnav-links a.primary:hover { background: var(--signal); border-color: var(--signal); }
   .topnav-links a.ghost:hover { border-color: var(--signal); color: var(--signal); }
+  /* "Star on GitHub" — the count stays hidden until gh-stars.js has a real
+     number, so the button is complete without it and nothing reflows. */
+  .topnav-links a.star { display: inline-flex; align-items: center; gap: 6px; }
+  .topnav-links a.star svg { width: 14px; height: 14px; flex: none; }
+  .gh-count {
+    margin-left: 1px; padding-left: 8px;
+    border-left: 1px solid rgba(243,242,237,.24);
+    font-variant-numeric: tabular-nums; font-weight: 600;
+  }
 </style>
 </head>
 <body>
@@ -342,7 +351,11 @@
   </a>
   <div class="topnav-links">
     <a class="ghost" href="/docs/">Docs</a>
-    <a class="primary" href="https://github.com/project-arbr/arbr-control-plane" target="_blank" rel="noreferrer">GitHub ↗</a>
+    <a class="primary star" href="https://github.com/project-arbr/arbr-control-plane" target="_blank" rel="noreferrer">
+      <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.75.75 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z"/></svg>
+      Star on GitHub
+      <span class="gh-count" data-gh-stars hidden></span>
+    </a>
   </div>
 </nav>
 
@@ -791,6 +804,7 @@
     search.addEventListener('input', runFilter);
   })();
 </script>
+<script src="/assets/gh-stars.js" defer></script>
 
 </body>
 </html>

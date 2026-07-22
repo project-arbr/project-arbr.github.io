@@ -97,6 +97,15 @@ code, pre, .mono { font-family: var(--mono); }
 .btn-dark { background: var(--ink); color: var(--white, #fbfaf6); border-color: var(--ink); }
 .btn-dark:hover { background: var(--signal); border-color: var(--signal); color: #fff; }
 .btn-light:hover { border-color: var(--signal); color: var(--signal); }
+/* "Star on GitHub" — the count stays hidden until gh-stars.js has a real number,
+   so the button is complete without it and nothing reflows when it lands. */
+.btn-star { gap: 7px; }
+.btn-star svg { width: 15px; height: 15px; flex: none; }
+.gh-count {
+  margin-left: 1px; padding-left: 8px;
+  border-left: 1px solid rgba(255,255,255,.22);
+  font-variant-numeric: tabular-nums; font-weight: 600;
+}
 
 /* ── Layout: sidebar · content · toc ─────────────────────────────────────── */
 .shell {
