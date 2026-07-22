@@ -16,9 +16,10 @@
   var CACHE_KEY = "arbr:gh-stars";
   var CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour
 
-  // Hide the count below this many stars. 0 shows it as soon as it is known.
-  // Raise it if you would rather the number stayed hidden until it flatters.
-  var MIN_STARS = 0;
+  // Hide the count below this many stars. A small number is weaker social proof
+  // than none at all, so the button ships without one and reveals it on its own
+  // once the repository crosses the threshold. Set to 0 to always show it.
+  var MIN_STARS = 25;
 
   function render(n) {
     if (typeof n !== "number" || n < MIN_STARS) return;
