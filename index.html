@@ -159,6 +159,18 @@
     }
     .eyebrow { display: flex; align-items: center; gap: 10px; margin-bottom: 24px; color: #555954; font-size: 13px; }
     .eyebrow .dot { width: 8px; height: 8px; background: var(--signal-2); border-radius: 50%; box-shadow: 0 0 0 5px rgba(var(--signal-rgb),.16); }
+    /* Open-source badge: the license stated up front, the way an open project should. */
+    .oss-badge {
+      display: inline-flex; align-items: center; gap: 9px;
+      padding: 7px 15px 7px 13px; border-radius: 999px;
+      border: 1px solid rgba(var(--signal-rgb),.30);
+      background: rgba(var(--signal-rgb),.07);
+      color: var(--signal); font-size: 13px; font-weight: 500;
+      transition: border-color .2s ease, background .2s ease;
+    }
+    .oss-badge:hover { border-color: rgba(var(--signal-rgb),.55); background: rgba(var(--signal-rgb),.12); }
+    .oss-badge .dot { box-shadow: 0 0 0 4px rgba(var(--signal-rgb),.14); }
+    .oss-badge .sep { opacity: .45; }
     h1 {
       margin: 0;
       max-width: 760px;
@@ -611,6 +623,10 @@
     .footer-col strong { display:block; font-size:11px; margin-bottom:17px; }
     .footer-col a { display:block; color:#737672; font-size:12px; margin:11px 0; }
     .footer-bottom { display:flex; justify-content:space-between; gap:20px; align-items:center; padding-top:24px; color:#8a8d88; font-size:10px; }
+    .footer-bottom a { color:#a9aca7; text-decoration:none; transition:color .2s ease; }
+    .footer-bottom a:hover { color:var(--signal); }
+    .footer-made .heart { color:#e0564f; font-size:11px; }
+    .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
 
     .reveal { opacity:0; transform:translateY(28px); transition: opacity .7s ease, transform .7s ease; }
     .reveal.visible { opacity:1; transform:none; }
@@ -884,7 +900,7 @@
     <section class="hero">
       <div class="wrap hero-grid">
         <div>
-          <div class="eyebrow"><span class="dot"></span><span class="mono">Open AI infrastructure</span></div>
+          <div class="eyebrow"><a class="oss-badge" href="https://github.com/project-arbr/arbr-control-plane/blob/main/LICENSE" target="_blank" rel="noopener"><span class="dot"></span>Open source<span class="sep">·</span>MIT licensed</a></div>
           <h1>Control every <span class="thin">AI request.</span></h1>
           <p class="hero-copy">Route each task to the right model. See where every token goes. Set the limits before costs, failures, or provider risk become operational problems.</p>
           <div class="hero-actions">
@@ -1210,7 +1226,7 @@ console.log(response.choices[<span class="code-blue">0</span>].message.content);
         <div class="footer-col"><strong>Developers</strong><a href="/docs/">Documentation</a><a href="/docs/gateway/">Native API</a><a href="/docs/gateway/#openai-compat">OpenAI compatibility</a><a href="/docs/deployment/">Deployment</a></div>
         <div class="footer-col"><strong>Project</strong><a href="https://github.com/project-arbr/arbr-control-plane">GitHub</a><a href="https://github.com/project-arbr/arbr-control-plane/blob/main/CHANGELOG.md">Changelog</a><a href="https://github.com/project-arbr/arbr-control-plane/blob/main/ROADMAP.md">Roadmap</a><a href="https://github.com/project-arbr/arbr-control-plane/blob/main/LICENSE">License</a></div>
       </div>
-      <div class="footer-bottom mono"><span>© 2026 ARBR. OPEN INFRASTRUCTURE.</span><span>BUILT FOR CONTROL, NOT LOCK-IN.</span></div>
+      <div class="footer-bottom mono"><span>© 2026 ARBR. OPEN SOURCE, <a href="https://github.com/project-arbr/arbr-control-plane/blob/main/LICENSE">MIT LICENSED</a>.</span><span class="footer-made">Made with <span class="heart" aria-hidden="true">♥</span><span class="sr-only"> love </span> by <a href="https://gyde.ai" target="_blank" rel="noopener">Gyde</a> in India</span></div>
     </div>
   </footer>
 
