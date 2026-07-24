@@ -401,8 +401,8 @@ a.card .go { color: var(--signal); font-size: 13px; font-weight: 500; margin-top
 }
 .docs-footer a { color: var(--muted); }
 .docs-footer a:hover { color: var(--ink); }
-.docs-footer .heart { color: #e0564f; }
-.sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+.docs-initiative { color: var(--ink); font-weight: 500; }
+.docs-initiative a { color: var(--signal); font-weight: 600; }
 
 /* ── Responsive ──────────────────────────────────────────────────────────── */
 @media (max-width: 1080px) {
