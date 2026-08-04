@@ -118,6 +118,14 @@
       :root:not([data-theme="light"]) .security-row .icon { background: rgba(255,255,255,.08); }
       /* The wordmark is a monochrome raster logo; invert it to read light on dark. */
       :root:not([data-theme="light"]) .brand-logo { filter: brightness(0) invert(1); }
+      /* Signal blue is a good button surface but too dark as text on a dark page;
+         lift signal-coloured text/links to the lighter periwinkle. */
+      :root:not([data-theme="light"]) .oss-badge { color: var(--signal-light); border-color: rgba(var(--signal-rgb),.5); background: rgba(var(--signal-rgb),.13); }
+      :root:not([data-theme="light"]) .footer-initiative a { color: var(--signal-light); }
+      :root:not([data-theme="light"]) .nav-links a:hover,
+      :root:not([data-theme="light"]) .btn-light:hover,
+      :root:not([data-theme="light"]) .text-link:hover,
+      :root:not([data-theme="light"]) .footer-bottom a:hover { color: var(--signal-light); }
     }
     :root[data-theme="dark"] header.scrolled { background: rgba(18,19,17,.82); }
     :root[data-theme="dark"] .nav-links { color: #b7b8b2; }
@@ -148,6 +156,12 @@
     :root[data-theme="dark"] .security-copy p { color: #c6c7c0; }
     :root[data-theme="dark"] .security-row .icon { background: rgba(255,255,255,.08); }
     :root[data-theme="dark"] .brand-logo { filter: brightness(0) invert(1); }
+    :root[data-theme="dark"] .oss-badge { color: var(--signal-light); border-color: rgba(var(--signal-rgb),.5); background: rgba(var(--signal-rgb),.13); }
+    :root[data-theme="dark"] .footer-initiative a { color: var(--signal-light); }
+    :root[data-theme="dark"] .nav-links a:hover,
+    :root[data-theme="dark"] .btn-light:hover,
+    :root[data-theme="dark"] .text-link:hover,
+    :root[data-theme="dark"] .footer-bottom a:hover { color: var(--signal-light); }
 
     /* Theme toggle button */
     .theme-toggle {
