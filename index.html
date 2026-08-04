@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Apply the saved theme before first paint so there is no flash of the wrong theme. -->
+  <script>(function(){try{var t=localStorage.getItem('arbr-theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
   <meta name="description" content="Arbr is the open AI gateway and control plane for routing, observability, budgets and governance across every model provider." />
   <title>Arbr — Control every AI request</title>
 
@@ -61,6 +63,109 @@
       --radius-sm: 12px;
       --shadow: 0 24px 80px rgba(20,22,20,.12);
     }
+
+    /* ---------- Dark theme ----------
+       Strategy: flip the page background, body text and the inverted .dark bands only.
+       The bespoke mock illustrations (Overview dashboard, code editor, request table)
+       keep their own light palette — they read as framed screenshots on the dark page,
+       exactly as they look today, so nothing is half-themed. Applied two ways: auto when
+       the OS prefers dark (unless the visitor forced light), and via the header toggle
+       (data-theme="dark", which also wins over a light OS). */
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --ink: #f3f2ed; --ink-2: #e6e5dd;
+        --paper: #121311; --paper-2: #1a1b19;
+        --line: rgba(243,242,237,.14);
+        --shadow: 0 24px 80px rgba(0,0,0,.5);
+      }
+    }
+    :root[data-theme="dark"] {
+      --ink: #f3f2ed; --ink-2: #e6e5dd;
+      --paper: #121311; --paper-2: #1a1b19;
+      --line: rgba(243,242,237,.14);
+      --shadow: 0 24px 80px rgba(0,0,0,.5);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) header.scrolled { background: rgba(18,19,17,.82); }
+      :root:not([data-theme="light"]) .nav-links { color: #b7b8b2; }
+      :root:not([data-theme="light"]) .eyebrow,
+      :root:not([data-theme="light"]) .hero-note,
+      :root:not([data-theme="light"]) .kicker,
+      :root:not([data-theme="light"]) .strip-copy,
+      :root:not([data-theme="light"]) .provider-logos,
+      :root:not([data-theme="light"]) .pillar-index,
+      :root:not([data-theme="light"]) .feature .label,
+      :root:not([data-theme="light"]) .feature .corner { color: #9a9d97; }
+      :root:not([data-theme="light"]) .hero-copy,
+      :root:not([data-theme="light"]) .section-intro,
+      :root:not([data-theme="light"]) .pillar p,
+      :root:not([data-theme="light"]) .feature p,
+      :root:not([data-theme="light"]) .check { color: #c6c7c0; }
+      :root:not([data-theme="light"]) .dark,
+      :root:not([data-theme="light"]) .cta-card { background: #1b1c1a; color: var(--ink); }
+      :root:not([data-theme="light"]) .btn-dark { background: var(--ink); color: #121311; }
+      :root:not([data-theme="light"]) .btn-dark:hover { background: var(--signal); border-color: var(--signal); color: #fff; }
+      :root:not([data-theme="light"]) .check span { background: var(--signal); color: #fff; }
+      :root:not([data-theme="light"]) .footer-brand p,
+      :root:not([data-theme="light"]) .footer-col a,
+      :root:not([data-theme="light"]) .footer-social a { color: #9a9d97; }
+      :root:not([data-theme="light"]) .footer-initiative { color: var(--ink-2); }
+      :root:not([data-theme="light"]) .security-row small { color: #9a9d97; }
+      :root:not([data-theme="light"]) .security-copy p { color: #c6c7c0; }
+      :root:not([data-theme="light"]) .security-row .icon { background: rgba(255,255,255,.08); }
+      /* The wordmark is a monochrome raster logo; invert it to read light on dark. */
+      :root:not([data-theme="light"]) .brand-logo { filter: brightness(0) invert(1); }
+    }
+    :root[data-theme="dark"] header.scrolled { background: rgba(18,19,17,.82); }
+    :root[data-theme="dark"] .nav-links { color: #b7b8b2; }
+    :root[data-theme="dark"] .eyebrow,
+    :root[data-theme="dark"] .hero-note,
+    :root[data-theme="dark"] .kicker,
+    :root[data-theme="dark"] .strip-copy,
+    :root[data-theme="dark"] .provider-logos,
+    :root[data-theme="dark"] .pillar-index,
+    :root[data-theme="dark"] .feature .label,
+    :root[data-theme="dark"] .feature .corner { color: #9a9d97; }
+    :root[data-theme="dark"] .hero-copy,
+    :root[data-theme="dark"] .section-intro,
+    :root[data-theme="dark"] .pillar p,
+    :root[data-theme="dark"] .feature p,
+    :root[data-theme="dark"] .check { color: #c6c7c0; }
+    :root[data-theme="dark"] .dark,
+    :root[data-theme="dark"] .cta-card { background: #1b1c1a; color: var(--ink); }
+    :root[data-theme="dark"] .btn-dark { background: var(--ink); color: #121311; }
+    :root[data-theme="dark"] .btn-dark:hover { background: var(--signal); border-color: var(--signal); color: #fff; }
+    :root[data-theme="dark"] .check span { background: var(--signal); color: #fff; }
+    :root[data-theme="dark"] .footer-brand p,
+    :root[data-theme="dark"] .footer-col a,
+    :root[data-theme="dark"] .footer-social a { color: #9a9d97; }
+    :root[data-theme="dark"] .footer-initiative { color: var(--ink-2); }
+    :root[data-theme="dark"] .security-row small { color: #9a9d97; }
+    :root[data-theme="dark"] .security-copy p { color: #c6c7c0; }
+    :root[data-theme="dark"] .security-row .icon { background: rgba(255,255,255,.08); }
+    :root[data-theme="dark"] .brand-logo { filter: brightness(0) invert(1); }
+
+    /* Theme toggle button */
+    .theme-toggle {
+      min-height: 42px; width: 42px; padding: 0;
+      display: inline-flex; align-items: center; justify-content: center;
+      border: 1px solid var(--line); border-radius: 999px;
+      background: transparent; color: var(--ink); cursor: pointer;
+      transition: transform .2s ease, border-color .2s ease, color .2s ease;
+    }
+    .theme-toggle:hover { transform: translateY(-2px); border-color: var(--signal); color: var(--signal); }
+    .theme-toggle:focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; }
+    .theme-toggle svg { width: 18px; height: 18px; }
+    .theme-toggle .icon-sun { display: none; }
+    .theme-toggle .icon-moon { display: block; }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) .theme-toggle .icon-moon { display: none; }
+      :root:not([data-theme="light"]) .theme-toggle .icon-sun { display: block; }
+    }
+    :root[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+    :root[data-theme="dark"] .theme-toggle .icon-sun { display: block; }
+    :root[data-theme="light"] .theme-toggle .icon-sun { display: none; }
+    :root[data-theme="light"] .theme-toggle .icon-moon { display: block; }
 
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
@@ -893,6 +998,10 @@
           <a href="/features/">Features</a>
         </div>
         <div class="nav-actions">
+          <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode" title="Toggle dark mode">
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.6M12 18.9v2.6M4.6 4.6l1.9 1.9M17.5 17.5l1.9 1.9M2.5 12h2.6M18.9 12h2.6M4.6 19.4l1.9-1.9M17.5 6.5l1.9-1.9" stroke-linecap="round"/></svg>
+          </button>
           <a class="btn btn-light" href="/docs/">Read docs</a>
           <a class="btn btn-dark btn-star" href="https://github.com/project-arbr/arbr-control-plane" target="_blank" rel="noopener">
             <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.75.75 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z"/></svg>
@@ -1199,7 +1308,7 @@ console.log(response.choices[<span class="code-blue">0</span>].message.content);
         </div>
         <div class="security-grid reveal">
           <div class="security-card">
-            <div class="security-row"><div class="icon">$</div><div><strong>Budget enforcement</strong><small>Alert, downgrade or block by application, provider, team, workflow or model.</small></div><span class="state mono">ENFORCED</span></div>
+            <div class="security-row"><div class="icon">$</div><div><strong>Budget enforcement</strong><small>Alert, downgrade or block by application, provider, team, workflow, model or user.</small></div><span class="state mono">ENFORCED</span></div>
             <div class="security-row"><div class="icon">#</div><div><strong>Gateway API keys</strong><small>Hashed keys, per-key request limits and automatic application attribution.</small></div><span class="state mono">ACTIVE</span></div>
             <div class="security-row"><div class="icon">×</div><div><strong>Application kill switch</strong><small>Disable all requests from an application without deleting its configuration.</small></div><span class="state mono">READY</span></div>
             <div class="security-row"><div class="icon">⌁</div><div><strong>Encrypted provider keys</strong><small>Credentials stay server-side and are never exposed to client applications.</small></div><span class="state mono">SECURED</span></div>
@@ -1248,6 +1357,19 @@ console.log(response.choices[<span class="code-blue">0</span>].message.content);
   </footer>
 
   <script>
+    // Theme toggle: flips the effective theme and remembers the choice.
+    const themeBtn = document.getElementById('themeToggle');
+    if (themeBtn) {
+      themeBtn.addEventListener('click', () => {
+        const cur = document.documentElement.getAttribute('data-theme');
+        const isDark = cur ? cur === 'dark'
+          : window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const next = isDark ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        try { localStorage.setItem('arbr-theme', next); } catch (e) {}
+      });
+    }
+
     const header = document.getElementById('header');
     window.addEventListener('scroll', () => header.classList.toggle('scrolled', window.scrollY > 16));
 
