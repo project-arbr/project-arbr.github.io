@@ -103,6 +103,9 @@
       :root:not([data-theme="light"]) .check { color: #c6c7c0; }
       :root:not([data-theme="light"]) .dark,
       :root:not([data-theme="light"]) .cta-card { background: #1b1c1a; color: var(--ink); }
+      /* The hero flow preview is a dark control-plane card (light text designed for a
+         dark surface); keep it dark so its text stays legible when --ink flips light. */
+      :root:not([data-theme="light"]) .arbr-flow { background: #1b1c1a; }
       :root:not([data-theme="light"]) .btn-dark { background: var(--ink); color: #121311; }
       :root:not([data-theme="light"]) .btn-dark:hover { background: var(--signal); border-color: var(--signal); color: #fff; }
       :root:not([data-theme="light"]) .check span { background: var(--signal); color: #fff; }
@@ -133,6 +136,7 @@
     :root[data-theme="dark"] .check { color: #c6c7c0; }
     :root[data-theme="dark"] .dark,
     :root[data-theme="dark"] .cta-card { background: #1b1c1a; color: var(--ink); }
+    :root[data-theme="dark"] .arbr-flow { background: #1b1c1a; }
     :root[data-theme="dark"] .btn-dark { background: var(--ink); color: #121311; }
     :root[data-theme="dark"] .btn-dark:hover { background: var(--signal); border-color: var(--signal); color: #fff; }
     :root[data-theme="dark"] .check span { background: var(--signal); color: #fff; }
