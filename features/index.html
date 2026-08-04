@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!-- Apply the saved theme before first paint so there is no flash of the wrong theme. -->
+<script>(function(){try{var t=localStorage.getItem('arbr-theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 <title>Arbr Feature catalog</title>
 <meta name="description" content="Every feature in the Arbr AI control plane, in plain English.">
 
@@ -38,8 +40,9 @@
     --surface: #fbfaf6;
     --surface-2: #ebeae4;
     --ink: #171817;
+    --ink-2: #2c2e2b;
     --ink-soft: #5f625e;
-    --ink-faint: #8a8878;
+    --ink-faint: #6f6e60;
     --hairline: rgba(23, 24, 23, 0.12);
     --signal: #2f37ff;
     --signal-ink: #2f37ff;
@@ -47,6 +50,40 @@
     --signal-wash-strong: rgba(47, 55, 255, 0.14);
     --shadow-card: 0 1px 2px 0 rgb(0 0 0 / 0.05), 0 0 0 1px rgb(0 0 0 / 0.04);
     --radius: 12px;
+  }
+
+  /* Dark theme. The same token set is applied two ways: automatically when the OS
+     prefers dark (unless the visitor forced light), and explicitly via the header
+     toggle (data-theme="dark", which also wins over a light OS). */
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #131413;
+      --surface: #1b1c1a;
+      --surface-2: #212220;
+      --ink: #f3f2ed;
+      --ink-2: #dcdbd3;
+      --ink-soft: #b6b7b0;
+      --ink-faint: #8d8e85;
+      --hairline: rgba(243, 242, 237, 0.14);
+      --signal-ink: #9aa4ff;
+      --signal-wash: rgba(120, 132, 255, 0.13);
+      --signal-wash-strong: rgba(120, 132, 255, 0.24);
+      --shadow-card: 0 1px 2px 0 rgb(0 0 0 / 0.4), 0 0 0 1px rgb(255 255 255 / 0.06);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #131413;
+    --surface: #1b1c1a;
+    --surface-2: #212220;
+    --ink: #f3f2ed;
+    --ink-2: #dcdbd3;
+    --ink-soft: #b6b7b0;
+    --ink-faint: #8d8e85;
+    --hairline: rgba(243, 242, 237, 0.14);
+    --signal-ink: #9aa4ff;
+    --signal-wash: rgba(120, 132, 255, 0.13);
+    --signal-wash-strong: rgba(120, 132, 255, 0.24);
+    --shadow-card: 0 1px 2px 0 rgb(0 0 0 / 0.4), 0 0 0 1px rgb(255 255 255 / 0.06);
   }
 
   * { box-sizing: border-box; }
@@ -273,6 +310,20 @@
     width: 226px;
     line-height: 1.35;
   }
+  .tag-new {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 6px;
+    padding: 1px 7px;
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--signal-ink);
+    background: var(--signal-wash);
+    border: 1px solid var(--signal-wash-strong);
+    border-radius: 999px;
+  }
   .row .desc {
     font-size: 13.5px;
     color: var(--ink-soft);
@@ -302,7 +353,7 @@
   footer a { color: var(--signal-ink); text-decoration: none; }
   footer a:hover { text-decoration: underline; }
   footer p { margin: 0 0 8px; }
-  footer .footer-initiative { margin-top: 12px; font-size: 14px; font-weight: 500; color: #2c2e2b; }
+  footer .footer-initiative { margin-top: 12px; font-size: 14px; font-weight: 500; color: var(--ink-2); }
   footer .footer-initiative a { color: var(--signal); font-weight: 600; }
 
   #emptyState {
@@ -352,9 +403,31 @@
   .topnav-links a.star svg { width: 14px; height: 14px; flex: none; }
   .gh-count {
     margin-left: 1px; padding-left: 8px;
-    border-left: 1px solid rgba(243,242,237,.24);
+    border-left: 1px solid rgba(128,128,128,.4);
     font-variant-numeric: tabular-nums; font-weight: 600;
   }
+  /* Theme toggle */
+  .theme-toggle {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 38px; height: 38px; padding: 0;
+    border: 1px solid var(--hairline); border-radius: 999px;
+    background: transparent; color: var(--ink); cursor: pointer;
+    transition: transform .15s, background .15s, border-color .15s, color .15s;
+  }
+  .theme-toggle:hover { transform: translateY(-1px); border-color: var(--signal); color: var(--signal); }
+  .theme-toggle:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
+  .theme-toggle svg { width: 17px; height: 17px; }
+  /* Icon swap: moon = "switch to dark" (shown in light), sun = "switch to light" (shown in dark). */
+  .theme-toggle .icon-sun { display: none; }
+  .theme-toggle .icon-moon { display: block; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .theme-toggle .icon-moon { display: none; }
+    :root:not([data-theme="light"]) .theme-toggle .icon-sun { display: block; }
+  }
+  :root[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+  :root[data-theme="dark"] .theme-toggle .icon-sun { display: block; }
+  :root[data-theme="light"] .theme-toggle .icon-sun { display: none; }
+  :root[data-theme="light"] .theme-toggle .icon-moon { display: block; }
 </style>
 </head>
 <body>
@@ -369,6 +442,10 @@
     </svg>
   </a>
   <div class="topnav-links">
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode" title="Toggle dark mode">
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.6M12 18.9v2.6M4.6 4.6l1.9 1.9M17.5 17.5l1.9 1.9M2.5 12h2.6M18.9 12h2.6M4.6 19.4l1.9-1.9M17.5 6.5l1.9-1.9" stroke-linecap="round"/></svg>
+    </button>
     <a class="ghost" href="/docs/">Docs</a>
     <a class="primary star" href="https://github.com/project-arbr/arbr-control-plane" target="_blank" rel="noreferrer">
       <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.75.75 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z"/></svg>
@@ -393,7 +470,7 @@
         <p>Arbr is a self-hosted control plane that sits in front of your AI providers. It gives you one gateway, with the routing, safety, cost, and governance logic most teams end up bolting on themselves. Below is every feature in the codebase, grouped by what it's for.</p>
       </div>
       <div class="stat-strip">
-        <div class="stat"><span class="num" id="statFeatures">0</span><span class="lbl">Features</span></div>
+        <div class="stat"><span class="num" id="statFeatures">115</span><span class="lbl">Features</span></div>
         <div class="stat"><span class="num">100+</span><span class="lbl">Providers</span></div>
         <div class="stat"><span class="num">3,000+</span><span class="lbl">Models</span></div>
       </div>
@@ -411,7 +488,23 @@
 <div class="layout">
   <nav class="index" id="index" aria-label="Feature areas">
     <div class="index-title">Jump to</div>
-    <!-- populated by JS from section data, but written statically for no-JS baseline -->
+    <!-- Static baseline so the nav works without JS; JS enhances each link with a live count. -->
+    <a href="#gateway"><span>Gateway</span></a>
+    <a href="#providers"><span>Providers &amp; models</span></a>
+    <a href="#routing"><span>Smart routing</span></a>
+    <a href="#caching"><span>Caching &amp; token limits</span></a>
+    <a href="#safety"><span>Guardrails &amp; safety</span></a>
+    <a href="#recommendations"><span>Recommendations</span></a>
+    <a href="#evaluation"><span>Proving it's safe (evaluation)</span></a>
+    <a href="#rollout"><span>Rolling out &amp; rolling back</span></a>
+    <a href="#budgets"><span>Budgets &amp; governance</span></a>
+    <a href="#analytics"><span>Analytics &amp; reporting</span></a>
+    <a href="#identity"><span>Identity &amp; access</span></a>
+    <a href="#security"><span>Keys &amp; security</span></a>
+    <a href="#ops"><span>Running it reliably</span></a>
+    <a href="#observability"><span>Observability</span></a>
+    <a href="#console"><span>The web console</span></a>
+    <a href="#sdks"><span>SDKs, integrations &amp; demos</span></a>
   </nav>
 
   <main class="content" id="content">
@@ -558,9 +651,10 @@
       </div>
       <p class="cat-desc">Hard limits and org-wide switches, so spend can never quietly run away.</p>
       <div class="rows">
-        <div class="row"><div class="name">Spend caps by app, provider, department, or model</div><div class="desc">Set a budget scoped as narrowly or broadly as you need, even org-wide.</div></div>
+        <div class="row"><div class="name">Spend caps by app, provider, department, model, or end user <span class="tag-new">New</span></div><div class="desc">Set a budget scoped as narrowly or broadly as you need, down to a single end user, or org-wide.</div></div>
         <div class="row"><div class="name">Three ways to enforce a cap</div><div class="desc">Choose to just get alerted, automatically downgrade to a cheaper model, or hard-block requests once a cap is hit.</div></div>
         <div class="row"><div class="name">Early-warning alerts</div><div class="desc">Get notified well before a budget is actually breached, not just at the moment it happens.</div></div>
+        <div class="row"><div class="name">Per-user usage alerts <span class="tag-new">New</span></div><div class="desc">Warn, or hard-cap, an individual end user as they approach their limit, and fire a webhook your app can turn into an in-product "you're at 80% of your usage" notice.</div></div>
         <div class="row"><div class="name">Org-wide maintenance kill-switch</div><div class="desc">One toggle instantly stops all AI traffic with a custom message, for planned maintenance or an incident.</div></div>
         <div class="row"><div class="name">Automatic data retention &amp; cleanup</div><div class="desc">Old request logs are deleted automatically after a retention window you choose.</div></div>
         <div class="row"><div class="name">Webhook alerts</div><div class="desc">Sends a real-time notification to Slack or any webhook URL when a budget or error-rate threshold is crossed.</div></div>
@@ -578,6 +672,8 @@
         <div class="row"><div class="name">Usage &amp; spend overview</div><div class="desc">Headline numbers at a glance: total cost, request volume, tokens, success rate, and cache hit rate.</div></div>
         <div class="row"><div class="name">Break down by any dimension</div><div class="desc">Slice spend and usage by application, team, workflow, model, provider, task type, or user.</div></div>
         <div class="row"><div class="name">Cost and usage trends over time</div><div class="desc">Day-by-day or hour-by-hour charts showing where spend is heading.</div></div>
+        <div class="row"><div class="name">Spend in your own currency <span class="tag-new">New</span></div><div class="desc">Show all costs in INR, EUR, GBP and more, converted live from up-to-date exchange rates. Amounts stay stored in USD, so nothing about billing changes, and the rate falls back to the last good value if the feed is briefly unavailable.</div></div>
+        <div class="row"><div class="name">Embeddable usage widget <span class="tag-new">New</span></div><div class="desc">Drop a live per-user usage chart straight into your own product with a single iframe, with no rebuild and no admin key, gated by a read-only usage token.</div></div>
         <div class="row"><div class="name">Measured, realised savings</div><div class="desc">Tracks actual savings from requests that got served by a cheaper model than originally asked for.</div></div>
         <div class="row"><div class="name">Trust level on every dollar saved</div><div class="desc">Shows which savings came from a fully-tested rule versus a human override versus no gate at all.</div></div>
         <div class="row"><div class="name">Per-provider health</div><div class="desc">Live error rate and response speed for each connected provider.</div></div>
@@ -613,8 +709,10 @@
       <p class="cat-desc">Credentials that are hard to leak and easy to rotate.</p>
       <div class="rows">
         <div class="row"><div class="name">Per-app gateway API keys</div><div class="desc">Issue a separate key to each application, shown only once, so you always know what's calling in.</div></div>
+        <div class="row"><div class="name">Read-only usage tokens <span class="tag-new">New</span></div><div class="desc">Issue a scoped token that can read only its own usage numbers, with no ability to make AI calls and no admin access, so an app or an end user can see spend without your master key.</div></div>
         <div class="row"><div class="name">Per-key rate limits</div><div class="desc">Cap how many requests per minute any single key can make.</div></div>
         <div class="row"><div class="name">Key expiry &amp; one-click rotation</div><div class="desc">Set keys to expire automatically, and replace a key instantly without breaking the app that uses it.</div></div>
+        <div class="row"><div class="name">Self-service key rotation <span class="tag-new">New</span></div><div class="desc">A key's own holder can rotate or revoke it themselves, using the key as proof, without needing an operator or admin. The old key stops working immediately.</div></div>
         <div class="row"><div class="name">Provider keys encrypted at rest</div><div class="desc">Your OpenAI/Anthropic/etc. keys are encrypted in the database and never sent back to the browser.</div></div>
         <div class="row"><div class="name">Cloud secret-manager support</div><div class="desc">Point any credential at a secret stored in Google Cloud Secret Manager instead of typing it in directly (AWS/Azure documented, easy to add).</div></div>
         <div class="row"><div class="name">Rotate a secret with no downtime</div><div class="desc">Update a secret in your cloud vault and Arbr picks up the new value automatically, no restart needed.</div></div>
@@ -679,7 +777,7 @@
         <div class="row"><div class="name">Audit</div><div class="desc">A searchable log of every admin action taken.</div></div>
         <div class="row"><div class="name">Users</div><div class="desc">Manage teammates and their permission level.</div></div>
         <div class="row"><div class="name">Models</div><div class="desc">Connect providers, browse the model catalog, add custom ones.</div></div>
-        <div class="row"><div class="name">Settings</div><div class="desc">Gateway API keys and the default provider/model.</div></div>
+        <div class="row"><div class="name">Settings</div><div class="desc">Gateway keys, read-only usage tokens, display currency, and the default provider/model.</div></div>
         <div class="row"><div class="name">In-app docs</div><div class="desc">A built-in walkthrough of every screen, with copy-pasteable examples.</div></div>
         <div class="row"><div class="name">Sign-in</div><div class="desc">Admin-key or company-login sign-in screen, depending on how it's configured.</div></div>
       </div>
@@ -715,11 +813,25 @@
 
 <script>
   (function () {
+    // Theme toggle: flips the effective theme and remembers the choice.
+    var themeBtn = document.getElementById('themeToggle');
+    if (themeBtn) {
+      themeBtn.addEventListener('click', function () {
+        var cur = document.documentElement.getAttribute('data-theme');
+        var isDark = cur ? cur === 'dark'
+          : window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var next = isDark ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        try { localStorage.setItem('arbr-theme', next); } catch (e) {}
+      });
+    }
+
     var sections = Array.prototype.slice.call(document.querySelectorAll('section.cat'));
     var index = document.getElementById('index');
     var totalFeatures = 0;
 
-    // Build sidebar + per-section counts from the DOM (single source of truth).
+    // Count features per section and enhance the static sidebar links with a live count.
+    // The links themselves are in the HTML (no-JS baseline); JS only adds the count badge.
     sections.forEach(function (sec) {
       var rows = sec.querySelectorAll('.row');
       var count = rows.length;
@@ -727,11 +839,13 @@
       var countEl = sec.querySelector('.cat-count');
       if (countEl) countEl.textContent = count + (count === 1 ? ' feature' : ' features');
 
-      var link = document.createElement('a');
-      link.href = '#' + sec.id;
-      var title = sec.querySelector('h2').textContent;
-      link.innerHTML = '<span>' + title + '</span><span class="n">' + count + '</span>';
-      index.appendChild(link);
+      var link = index.querySelector('a[href="#' + sec.id + '"]');
+      if (link && !link.querySelector('.n')) {
+        var n = document.createElement('span');
+        n.className = 'n';
+        n.textContent = count;
+        link.appendChild(n);
+      }
     });
 
     document.getElementById('statFeatures').textContent = totalFeatures;
