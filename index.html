@@ -1012,6 +1012,7 @@
           <a href="#routing">Routing</a>
           <a href="#observability">Observability</a>
           <a href="#governance">Governance</a>
+          <a href="#evaluate">Evals</a>
           <a href="#integrate">Developers</a>
           <a href="/features/">Features</a>
         </div>
@@ -1070,7 +1071,7 @@
               <div class="af-stage-copy">
                 <div class="af-stage-head"><span class="af-index">01</span><h3 class="af-title">CONNECT</h3></div>
                 <p class="af-role">Normalize access across every provider.</p>
-                <div class="af-chips"><span class="af-chip">100+ providers</span><span class="af-chip">3,000+ models</span><span class="af-chip">1 endpoint</span></div>
+                <div class="af-chips"><span class="af-chip">every major provider</span><span class="af-chip">+ LiteLLM &middot; self-hosted</span><span class="af-chip">1 endpoint</span></div>
               </div>
             </article>
 
@@ -1182,13 +1183,13 @@
       <div class="kicker">System architecture</div>
       <div>
         <h2>One gateway between your apps and every model.</h2>
-        <p class="section-intro">Point any application at a single OpenAI-compatible endpoint. Arbr classifies, routes, meters and governs each request, then delivers it back, all over a fabric of 100+ providers and 3,000+ models.</p>
+        <p class="section-intro">Point any application at a single OpenAI-compatible endpoint. Arbr classifies, routes, meters and governs each request, then delivers it back, across every major provider plus any OpenAI-compatible or self-hosted endpoint. Pricing and benchmark data spans 3,000+ models.</p>
       </div>
     </div>
 
     <div class="arch-shell reveal">
       <div class="arch-copy">
-        <div class="mode-list"><div class="mode active" data-zone="clients"><div class="num mono">01</div><div><strong>Clients</strong><span>Point any app at one OpenAI-compatible endpoint.</span></div></div><div class="mode" data-zone="hub"><div class="num mono">02</div><div><strong>Control plane</strong><span>Classify, route, meter and govern every request.</span></div></div><div class="mode" data-zone="delivers"><div class="num mono">03</div><div><strong>Delivers</strong><span>Response, analytics and recommendations back out.</span></div></div><div class="mode" data-zone="providers"><div class="num mono">04</div><div><strong>Providers</strong><span>One layer over 100+ providers and 3,000+ models.</span></div></div></div>
+        <div class="mode-list"><div class="mode active" data-zone="clients"><div class="num mono">01</div><div><strong>Clients</strong><span>Point any app at one OpenAI-compatible endpoint.</span></div></div><div class="mode" data-zone="hub"><div class="num mono">02</div><div><strong>Control plane</strong><span>Classify, route, meter and govern every request.</span></div></div><div class="mode" data-zone="delivers"><div class="num mono">03</div><div><strong>Delivers</strong><span>Response, analytics and recommendations back out.</span></div></div><div class="mode" data-zone="providers"><div class="num mono">04</div><div><strong>Providers</strong><span>One layer over every major provider and any OpenAI-compatible endpoint.</span></div></div></div>
       </div>
 
       <div class="arch-board">
@@ -1197,7 +1198,7 @@
         <div class="aa-tray" data-zone="providers">
           <div class="aa-trayhead">
             <div class="aa-traylbl">MODEL PROVIDERS</div>
-            <div class="aa-traycap"><b>100+ providers</b> &middot; <b>3,000+ models</b> &middot; one endpoint</div>
+            <div class="aa-traycap"><b>Every major provider</b> &middot; <b>3,000+ models priced</b> &middot; one endpoint</div>
           </div>
           <div class="aa-groups"><div class="aa-grp"><div class="aa-grplbl">Frontier labs</div><div class="aa-pvs"><span class="aa-pv">Anthropic</span><span class="aa-pv">OpenAI</span><span class="aa-pv">Google Gemini</span></div></div><div class="aa-grp"><div class="aa-grplbl">Cloud</div><div class="aa-pvs"><span class="aa-pv">Amazon Bedrock</span><span class="aa-pv">Azure OpenAI</span><span class="aa-pv">Vertex AI</span></div></div><div class="aa-grp"><div class="aa-grplbl">Fast · open</div><div class="aa-pvs"><span class="aa-pv">Groq</span><span class="aa-pv">DeepSeek</span><span class="aa-pv">Moonshot</span><span class="aa-pv">xAI</span><span class="aa-pv">Mistral</span></div></div><div class="aa-grp"><div class="aa-grplbl">Via gateway</div><div class="aa-pvs"><span class="aa-pv">LiteLLM</span><span class="aa-pv">NVIDIA NIM</span></div></div></div>
         </div>
@@ -1212,7 +1213,7 @@
           <div class="kicker">Operational visibility</div>
           <div>
             <h2>Know what your AI estate is doing.</h2>
-            <p class="section-intro">Measure spend, performance and reliability by provider, model, application, workflow, team and user. Drill into the exact reason behind any routing decision.</p>
+            <p class="section-intro">Measure spend, performance and reliability by provider, model, application, workflow, team and user. Every call becomes a structured event you can query in local dashboards or export to OpenTelemetry (Datadog, Grafana, Prometheus).</p>
           </div>
         </div>
         <div class="estate-dashboard reveal" aria-label="Arbr observability dashboard preview">
@@ -1330,11 +1331,32 @@ console.log(response.choices[<span class="code-blue">0</span>].message.content);
             <div class="security-row"><div class="icon">#</div><div><strong>Gateway API keys</strong><small>Hashed keys, per-key request limits and automatic application attribution.</small></div><span class="state mono">ACTIVE</span></div>
             <div class="security-row"><div class="icon">×</div><div><strong>Application kill switch</strong><small>Disable all requests from an application without deleting its configuration.</small></div><span class="state mono">READY</span></div>
             <div class="security-row"><div class="icon">⌁</div><div><strong>Encrypted provider keys</strong><small>Credentials stay server-side and are never exposed to client applications.</small></div><span class="state mono">SECURED</span></div>
+            <div class="security-row"><div class="icon">▨</div><div><strong>Output guardrails &amp; PII redaction</strong><small>Deny-list rules and PII redaction checked on responses before they return.</small></div><span class="state mono">ACTIVE</span></div>
+            <div class="security-row"><div class="icon">!</div><div><strong>Prompt-injection checks</strong><small>Rule-based detection blocks flagged inputs before they reach a model.</small></div><span class="state mono">READY</span></div>
           </div>
           <div class="security-copy">
             <div class="quote">Control cannot be an after-the-fact dashboard.</div>
             <p>Arbr places policy where it can change outcomes: between every application request and every model provider.</p>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="evaluate">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div class="kicker">Quality &amp; rollout</div>
+          <div><h2>Measure quality. Ship models safely.</h2><p class="section-intro">The gateway sees every request and response, so it can score quality and roll out new models on evidence, not hope.</p></div>
+        </div>
+        <div class="feature-grid reveal">
+          <article class="feature"><span class="label mono">Evaluate</span><span class="corner">↗</span><h3>Score answers, not just cost</h3><p>Sample live traffic and score it with an LLM judge, so quality trends sit next to spend.</p></article>
+          <article class="feature"><span class="label mono">Evidence-based routing</span><span class="corner">↗</span><h3>Route on measured quality</h3><p>Send each task to the cheapest model proven to clear its quality bar, backed by eval results.</p></article>
+          <article class="feature"><span class="label mono">Canary &amp; shadow</span><span class="corner">↗</span><h3>Try new models safely</h3><p>Send a slice of traffic to a challenger with instant rollback, or shadow it at zero user risk.</p></article>
+          <article class="feature"><span class="label mono">Regression gates</span><span class="corner">↗</span><h3>Gate on evidence</h3><p>A model cannot serve production until it clears the eval thresholds you set.</p></article>
+        </div>
+        <div style="text-align:center;max-width:640px;margin:40px auto 0;">
+          <div class="kicker" style="display:inline-block;padding-top:0;">On the roadmap</div>
+          <p style="margin:8px 0 0;color:#666a65;font-size:16px;line-height:1.55;">The dataset factory: turn the traffic Arbr already logs into fine-tuning-ready datasets, so your own models improve on your own data. Not shipped yet.</p>
         </div>
       </div>
     </section>
@@ -1366,7 +1388,7 @@ console.log(response.choices[<span class="code-blue">0</span>].message.content);
             </a>
           </div>
         </div>
-        <div class="footer-col"><strong>Platform</strong><a href="/features/">Feature catalog</a><a href="#routing">Routing</a><a href="#observability">Observability</a><a href="#governance">Governance</a><a href="#integrate">SDKs</a></div>
+        <div class="footer-col"><strong>Platform</strong><a href="/features/">Feature catalog</a><a href="#routing">Routing</a><a href="#observability">Observability</a><a href="#governance">Governance</a><a href="#evaluate">Evals &amp; rollout</a><a href="#integrate">SDKs</a></div>
         <div class="footer-col"><strong>Developers</strong><a href="/docs/">Documentation</a><a href="/docs/gateway/">Native API</a><a href="/docs/gateway/#openai-compat">OpenAI compatibility</a><a href="/docs/deployment/">Deployment</a></div>
         <div class="footer-col"><strong>Project</strong><a href="https://github.com/project-arbr/arbr-control-plane">GitHub</a><a href="https://github.com/project-arbr/arbr-control-plane/blob/main/CHANGELOG.md">Changelog</a><a href="https://github.com/project-arbr/arbr-control-plane/blob/main/ROADMAP.md">Roadmap</a><a href="https://github.com/project-arbr/arbr-control-plane/blob/main/LICENSE">License</a></div>
       </div>
