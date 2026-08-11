@@ -791,6 +791,8 @@
     @media (max-width: 720px) {
       .wrap { width:min(calc(100% - 28px), var(--max)); }
       .nav-actions .btn-light { display:none; }
+      /* Keep the hosted CTA visible on mobile (it's the conversion path), sized like the star button. */
+      .nav-actions .btn-hosted { display:inline-flex; min-height:38px; padding:0 13px; font-size:12px; }
       .nav-actions .btn-dark { min-height:38px; padding:0 13px; font-size:12px; }
       .menu-button { display:none; }
       h1 { font-size:clamp(52px,15vw,78px); }
@@ -1029,6 +1031,7 @@
             <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
             <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.6M12 18.9v2.6M4.6 4.6l1.9 1.9M17.5 17.5l1.9 1.9M2.5 12h2.6M18.9 12h2.6M4.6 19.4l1.9-1.9M17.5 6.5l1.9-1.9" stroke-linecap="round"/></svg>
           </button>
+          <a class="btn btn-light btn-hosted" href="https://app.projectarbr.com/plans">Don't want to host it?</a>
           <a class="btn btn-light" href="/docs/">Read docs</a>
           <a class="btn btn-dark btn-star" href="https://github.com/project-arbr/arbr-control-plane" target="_blank" rel="noopener">
             <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.75.75 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z"/></svg>
