@@ -118,6 +118,8 @@
       :root:not([data-theme="light"]) .security-row .icon { background: rgba(255,255,255,.08); }
       /* The wordmark is a monochrome raster logo; invert it to read light on dark. */
       :root:not([data-theme="light"]) .brand-logo { filter: brightness(0) invert(1); }
+      :root:not([data-theme="light"]) .ph-badge .ph-light { display: none; }
+      :root:not([data-theme="light"]) .ph-badge .ph-dark { display: block; }
       /* Signal blue is a good button surface but too dark as text on a dark page;
          lift signal-coloured text/links to the lighter periwinkle. */
       :root:not([data-theme="light"]) .oss-badge { color: var(--signal-light); border-color: rgba(var(--signal-rgb),.5); background: rgba(var(--signal-rgb),.13); }
@@ -156,6 +158,8 @@
     :root[data-theme="dark"] .security-copy p { color: #c6c7c0; }
     :root[data-theme="dark"] .security-row .icon { background: rgba(255,255,255,.08); }
     :root[data-theme="dark"] .brand-logo { filter: brightness(0) invert(1); }
+    :root[data-theme="dark"] .ph-badge .ph-light { display: none; }
+    :root[data-theme="dark"] .ph-badge .ph-dark { display: block; }
     :root[data-theme="dark"] .oss-badge { color: var(--signal-light); border-color: rgba(var(--signal-rgb),.5); background: rgba(var(--signal-rgb),.13); }
     :root[data-theme="dark"] .footer-initiative a { color: var(--signal-light); }
     :root[data-theme="dark"] .nav-links a:hover,
@@ -310,6 +314,14 @@
     .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
     .hero-note { display: flex; align-items: center; gap: 8px; margin-top: 22px; color: #6f726e; font-size: 12px; }
     .hero-note svg { width: 14px; }
+
+    /* Product Hunt launch badge. Product Hunt renders the badge as two fixed-palette
+       SVGs (white card / #221D21 card), so we ship both and let CSS pick — same
+       three-state rule as the rest of the page: light by default, dark when the OS
+       prefers it (unless the visitor forced light) or when the toggle says dark. */
+    .ph-badge { display: inline-block; margin-top: 26px; line-height: 0; }
+    .ph-badge img { display: block; width: 250px; height: 54px; }
+    .ph-badge .ph-dark { display: none; }
 
     /* Hero architecture flow */
     .arbr-flow {
@@ -1076,6 +1088,10 @@
             <a class="btn btn-dark" href="https://github.com/project-arbr/arbr-control-plane">Deploy ARBR <span>↗</span></a>
             <a class="btn btn-light" href="#integrate">See the integration</a>
           </div>
+          <a class="ph-badge" href="https://www.producthunt.com/products/arbr?embed=true&amp;utm_source=badge-featured&amp;utm_medium=badge&amp;utm_campaign=badge-arbr" target="_blank" rel="noopener noreferrer">
+            <img class="ph-light" width="250" height="54" src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1231840&amp;theme=light" alt="ARBR - Control Every AI Request | Product Hunt">
+            <img class="ph-dark" width="250" height="54" src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1231840&amp;theme=dark" alt="ARBR - Control Every AI Request | Product Hunt">
+          </a>
           <div class="hero-note mono">
             <svg viewBox="0 0 16 16" fill="none"><path d="M5 8.5 7.2 11 12 5.5" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="8" r="6.25" stroke="currentColor" stroke-width="1.2"/></svg>
             One OpenAI-compatible endpoint. Self-hosted. Provider-neutral.
