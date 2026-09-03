@@ -120,6 +120,7 @@
       :root:not([data-theme="light"]) .brand-logo { filter: brightness(0) invert(1); }
       :root:not([data-theme="light"]) .ph-badge .ph-light { display: none; }
       :root:not([data-theme="light"]) .ph-badge .ph-dark { display: block; }
+      :root:not([data-theme="light"]) .ph-badge::after { border-color: #221D21; }
       /* Signal blue is a good button surface but too dark as text on a dark page;
          lift signal-coloured text/links to the lighter periwinkle. */
       :root:not([data-theme="light"]) .oss-badge { color: var(--signal-light); border-color: rgba(var(--signal-rgb),.5); background: rgba(var(--signal-rgb),.13); }
@@ -160,6 +161,7 @@
     :root[data-theme="dark"] .brand-logo { filter: brightness(0) invert(1); }
     :root[data-theme="dark"] .ph-badge .ph-light { display: none; }
     :root[data-theme="dark"] .ph-badge .ph-dark { display: block; }
+    :root[data-theme="dark"] .ph-badge::after { border-color: #221D21; }
     :root[data-theme="dark"] .oss-badge { color: var(--signal-light); border-color: rgba(var(--signal-rgb),.5); background: rgba(var(--signal-rgb),.13); }
     :root[data-theme="dark"] .footer-initiative a { color: var(--signal-light); }
     :root[data-theme="dark"] .nav-links a:hover,
@@ -318,9 +320,18 @@
     /* Product Hunt launch badge. Product Hunt renders the badge as two fixed-palette
        SVGs (white card / #221D21 card), so we ship both and let CSS pick — same
        three-state rule as the rest of the page: light by default, dark when the OS
-       prefers it (unless the visitor forced light) or when the toggle says dark. */
-    .ph-badge { display: inline-block; margin-top: 26px; line-height: 0; }
-    .ph-badge img { display: block; width: 250px; height: 54px; }
+       prefers it (unless the visitor forced light) or when the toggle says dark.
+
+       Sized down to 44px tall so it sits with the CTA row rather than towering over
+       it (0.815 of PH's native 250x54). The upvote counter lives in the right 49px
+       of their artwork and reads "???" until the post ranks, so the box clips to the
+       first 202 units — content ends at ~190, leaving the same 11px padding as the
+       left edge. ::after repaints the card outline over the cut so the right side
+       keeps its border and rounded corner. Drop the width/overflow to restore the
+       count once it looks good. */
+    .ph-badge { position: relative; display: inline-block; margin-top: 26px; width: 165px; height: 44px; overflow: hidden; border-radius: 8px; line-height: 0; }
+    .ph-badge img { display: block; width: 204px; height: 44px; max-width: none; }
+    .ph-badge::after { content: ""; position: absolute; inset: 0; border: 1px solid #FF6154; border-radius: 8px; pointer-events: none; }
     .ph-badge .ph-dark { display: none; }
 
     /* Hero architecture flow */
@@ -1089,8 +1100,8 @@
             <a class="btn btn-light" href="#integrate">See the integration</a>
           </div>
           <a class="ph-badge" href="https://www.producthunt.com/products/arbr?embed=true&amp;utm_source=badge-featured&amp;utm_medium=badge&amp;utm_campaign=badge-arbr" target="_blank" rel="noopener noreferrer">
-            <img class="ph-light" width="250" height="54" src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1231840&amp;theme=light" alt="ARBR - Control Every AI Request | Product Hunt">
-            <img class="ph-dark" width="250" height="54" src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1231840&amp;theme=dark" alt="ARBR - Control Every AI Request | Product Hunt">
+            <img class="ph-light" width="204" height="44" src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1231840&amp;theme=light" alt="ARBR - Control Every AI Request | Product Hunt">
+            <img class="ph-dark" width="204" height="44" src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1231840&amp;theme=dark" alt="ARBR - Control Every AI Request | Product Hunt">
           </a>
           <div class="hero-note mono">
             <svg viewBox="0 0 16 16" fill="none"><path d="M5 8.5 7.2 11 12 5.5" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="8" r="6.25" stroke="currentColor" stroke-width="1.2"/></svg>
